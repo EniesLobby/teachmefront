@@ -1,1 +1,2 @@
-<app-tree></app-tree>
+<app-tree (rightClickedCoordinates)='performRightClick($event)' (showContextMenu)='hideContextMenu($event)'></app-tree>
+<app-right-click-menu [rightClickedCoordinates]="rightClickedCoordinates" [showContextMenu]="showContextMenu"></app-right-click-menu>

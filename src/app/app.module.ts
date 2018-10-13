@@ -7,12 +7,14 @@ import { TreeComponent } from './tree/tree.component';
 import { TreeService } from './tree/tree.service';
 
 import {HttpClientModule} from "@angular/common/http";
+import { RightClickMenuComponent } from './right-click-menu/right-click-menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TreeTestComponent,
-    TreeComponent
+    TreeComponent,
+    RightClickMenuComponent
   ],
   imports: [
     BrowserModule,
