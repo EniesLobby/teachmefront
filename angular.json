@@ -28,7 +28,10 @@
             "scripts": [
                "node_modules/jquery/dist/jquery.min.js",
                "node_modules/cytoscape/dist/cytoscape.min.js",
-               "node_modules/cytoscape-cxtmenu/cytoscape-cxtmenu.js"
+               "node_modules/cytoscape-cxtmenu/cytoscape-cxtmenu.js",
+               "node_modules/wheelnav/raphael.min.js",
+               "node_modules/wheelnav/raphael.icons.min.js",
+               "node_modules/wheelnav/wheelnav.min.js"
             ]
           },
           "configurations": {

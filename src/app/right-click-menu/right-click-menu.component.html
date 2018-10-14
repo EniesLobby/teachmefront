@@ -1,4 +1,13 @@
-<div  *ngIf="showContextMenu" class="contextmenu" [ngStyle]="{'left.px': x, 'top.px': y}">
-  this is your contextmenu content
+<div  >
+ 
+</div>
+
+<div class="menu" id="nodeContextMenu" *ngIf="showContextMenu" [ngStyle]="{'left.px': x, 'top.px': y}">
+  <ul class="menu-options">
+    <li class="menu-option">Edit Question</li>
+    <li class="menu-option">Edit Answers</li>
+    <li class="menu-option">Edit Information</li>
+    <li class="menu-option">Inspect</li>
+  </ul>
 </div>
 

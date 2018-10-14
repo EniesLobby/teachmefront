@@ -1,4 +1,5 @@
 import { Component, OnChanges, Renderer, ElementRef, Input, Output, EventEmitter, Inject } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -13,15 +14,15 @@ export class AppComponent {
   @Input() showContextMenu;
 
   public performRightClick(event) {
+    
+    this.hideContextMenu(true);
     this.rightClickedCoordinates = event;
-    this.showContextMenu = true;
-    console.log("ae2");
-    console.log(event);
   }
 
   public hideContextMenu(state) {
+
     this.showContextMenu = state;
-    console.log(state);
+    console.log("state from app.compoonent = " + state);
 
     return false;
   }

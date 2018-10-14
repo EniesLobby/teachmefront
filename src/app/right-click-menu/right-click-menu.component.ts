@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { unwatchFile } from 'fs';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-right-click-menu',
   templateUrl: './right-click-menu.component.html',
   styleUrls: ['./right-click-menu.component.css']
 })
-export class RightClickMenuComponent implements OnChanges  {
+export class RightClickMenuComponent implements OnChanges, OnInit  {
 
   @Input() showContextMenu;
   @Input() rightClickedCoordinates;
@@ -16,13 +16,22 @@ export class RightClickMenuComponent implements OnChanges  {
 
   constructor() { }
 
-  ngOnChanges (changes: SimpleChanges) {
+  ngOnInit() {
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+
+    $("#nodeContextMenu").on("contextmenu", function(e) {
+      return false;
+    });
+
+    console.log("hello from right click");
 
     if( this.rightClickedCoordinates != undefined ) {
       this.x = this.rightClickedCoordinates.x;
       this.y = this.rightClickedCoordinates.y;
     }
-    console.log(this.showContextMenu);
     
     console.log(this.x + " " + this.y);
   }

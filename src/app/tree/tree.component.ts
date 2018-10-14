@@ -1,9 +1,9 @@
 import { Component, OnChanges, Renderer, ElementRef, Input, Output, EventEmitter, Inject, OnInit } from '@angular/core';
 import * as cytoscape from 'cytoscape';
+import cxtmenu from 'cytoscape-cxtmenu';
 
 import { TreeService } from './tree.service';
 import * as $ from 'jquery';
-import { asElementData } from '@angular/core/src/view';
 
 @Component({
   selector: 'app-tree',
@@ -22,6 +22,9 @@ export class TreeComponent implements OnChanges {
   @Input() public style: any;
   @Input() public layout: any;
   @Input() public zoom: any;
+
+
+  public local_data: any;
 
   @Output() rightClickedCoordinates = new EventEmitter();
   @Output() showContextMenu = new EventEmitter();
@@ -61,8 +64,8 @@ export class TreeComponent implements OnChanges {
       nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
       roots: "#48", // the roots of the trees
       maximalAdjustments: 0, // how many times to try to position the nodes in a maximal way (i.e. no backtracking)
-      animate: false, // whether to transition the node positions
-      animationDuration: 500, // duration of animation in ms if enabled
+      animate: true, // whether to transition the node positions
+      animationDuration: 1000, // duration of animation in ms if enabled
       animationEasing: undefined, // easing of animation if enabled,
       animateFilter: function ( node, i ){ return true; }, // a function that determines whether the node should be animated.  All nodes animated by default on animate enabled.  Non-animated nodes are positioned immediately when the layout starts
       ready: undefined, // callback on layoutready
@@ -84,6 +87,10 @@ export class TreeComponent implements OnChanges {
 
       this.getTree().then(() =>
       this.render(this.rightClickedCoordinates, this.showContextMenu)); // Now has value;
+
+      $("body").on("contextmenu", function(e) {
+        return false;
+      });
   }
 
   public getTree() {
@@ -94,16 +101,19 @@ export class TreeComponent implements OnChanges {
 
   public render(rightClickedCoordinates, showContextMenu) {
     
+    // Initialization of the tree instance
     let cy_contianer = this.renderer.selectRootElement("#cy");
     let cy = cytoscape({
 
       container: cy_contianer,
       elements: this.tree_data,
-      style: this.appr
-    
+      style: this.appr,
+      zoom: this.zoom,
+      pan: {x: 1, y: 20}
     });
 
     cy.layout( this.options ).run();
+    cy.userZoomingEnabled( false );
 
     // click on the edge
     cy.on('tap', 'edge', function(evt) {
@@ -114,9 +124,18 @@ export class TreeComponent implements OnChanges {
 
     // click on the node
     cy.on('tap', 'node', function(evt) {
+      
+      // hide context menu on click
       showContextMenu.emit(false)
       var node = evt.target;
-      cy.$("#" + node.id()).style({'background-color': '#b3e0ff'})
+      
+      // change background color when clicked
+      cy.$("#" + node.id()).style({
+                            'background-color': '#b3e0ff',
+                            'width': 110,
+                            'height': 110
+                          })
+
       console.log("tapped " + node.id())
       
       // onclick view nodes params
@@ -133,21 +152,53 @@ export class TreeComponent implements OnChanges {
     
         var evtTarget = event.target;
       
+        // return to the normal state of the node
         if( evtTarget === cy ) {
-            cy.$("node").style({'background-color': '#4db8ff'})
+
+            cy.$("node").style({
+                      'background-color': '#4db8ff',
+                      'width': 90,
+                      'height': 90
+                    })
+
             showContextMenu.emit(false)
-            console.log("false")
+
         } else {
           console.log(evtTarget);
         }
       });
 
     // right click
-    let current_position: any;
+    cy.on('cxttap', 'node', function(event) {
 
-    cy.on('cxttap', function(event) {
+      // move to the function
+      cy.$("node").style({
+        'background-color': '#4db8ff',
+        'width': 90,
+        'height': 90
+      })
+
       var node = event.target;
+
+      if( node === cy ) {
+        
+        cy.$("node").style({
+          'background-color': '#4db8ff',
+          'width': 90,
+          'height': 90
+        })
+
+        showContextMenu.emit(false)
+        return
+      }
+
       var pos = cy.$("#" + node.id()).renderedPosition();
+
+      cy.$("#" + node.id()).style({
+        'background-color': '#b3e0ff',
+        'width': 110,
+        'height': 110
+      })
       
       rightClickedCoordinates.emit(pos);
     });
