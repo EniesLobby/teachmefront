@@ -29,6 +29,9 @@ export class TreeComponent implements OnChanges {
   @Output() rightClickedCoordinates = new EventEmitter();
   @Output() showContextMenu = new EventEmitter();
 
+  @Output() leftClickedCoordinates = new EventEmitter();
+  @Output() showRadialMenu = new EventEmitter();
+
   public constructor(private renderer : Renderer, private el: ElementRef, private treeService: TreeService) {
 
     this.zoom = this.zoom || {
@@ -75,18 +78,18 @@ export class TreeComponent implements OnChanges {
   }
 
   public ngOnChanges(): any {
-    this.render(this.rightClickedCoordinates, this.showContextMenu);
+    this.render(this.rightClickedCoordinates, this.showContextMenu, this.leftClickedCoordinates, this.showRadialMenu);
     console.log(this.el.nativeElement);
   }
 
   refresh() {
-    this.render(this.rightClickedCoordinates, this.showContextMenu);
+    this.render(this.rightClickedCoordinates, this.showContextMenu, this.leftClickedCoordinates, this.showRadialMenu);
   }
 
   public ngOnInit() {
 
       this.getTree().then(() =>
-      this.render(this.rightClickedCoordinates, this.showContextMenu)); // Now has value;
+      this.render(this.rightClickedCoordinates, this.showContextMenu, this.leftClickedCoordinates, this.showRadialMenu)); // Now has value;
 
       $("body").on("contextmenu", function(e) {
         return false;
@@ -96,10 +99,12 @@ export class TreeComponent implements OnChanges {
   public getTree() {
     return this.treeService.getTree().toPromise().then( data => {
       this.tree_data = data
+      console.log(data);
     });
+
   }
 
-  public render(rightClickedCoordinates, showContextMenu) {
+  public render(rightClickedCoordinates, showContextMenu, leftClickedCoordinates, showRadialMenu) {
     
     // Initialization of the tree instance
     let cy_contianer = this.renderer.selectRootElement("#cy");
@@ -126,7 +131,9 @@ export class TreeComponent implements OnChanges {
     cy.on('tap', 'node', function(evt) {
       
       // hide context menu on click
-      showContextMenu.emit(false)
+      showContextMenu.emit(false);
+      showRadialMenu.emit(false);
+
       var node = evt.target;
       
       // change background color when clicked
@@ -134,13 +141,11 @@ export class TreeComponent implements OnChanges {
                             'background-color': '#b3e0ff',
                             'width': 110,
                             'height': 110
-                          })
-
-      console.log("tapped " + node.id())
-      
+                          })  
       // onclick view nodes params
-      var pos = cy.$("#" + node.id()).position();
-
+      var pos = cy.$("#" + node.id()).renderedPosition();
+      
+      leftClickedCoordinates.emit(pos);
       $("#node_information").empty();        
     });
 
@@ -151,7 +156,7 @@ export class TreeComponent implements OnChanges {
         // of the event (core or element)
     
         var evtTarget = event.target;
-      
+    
         // return to the normal state of the node
         if( evtTarget === cy ) {
 
@@ -161,8 +166,8 @@ export class TreeComponent implements OnChanges {
                       'height': 90
                     })
 
-            showContextMenu.emit(false)
-
+            showContextMenu.emit(false);
+            showRadialMenu.emit(false);
         } else {
           console.log(evtTarget);
         }
@@ -188,7 +193,8 @@ export class TreeComponent implements OnChanges {
           'height': 90
         })
 
-        showContextMenu.emit(false)
+        showContextMenu.emit(false);
+        showRadialMenu.emit(false);
         return
       }
 

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { TreeTestComponent } from './tree-test/tree-test.component';
@@ -11,7 +12,7 @@ import { RightClickMenuComponent } from './right-click-menu/right-click-menu.com
 import { RadialMenuComponent } from './radial-menu/radial-menu.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SupporterComponent } from './supporter/supporter.component';
-
+import { QuestionEditComponent } from './question-edit/question-edit.component';
 
 @NgModule({
   declarations: [
@@ -21,11 +22,16 @@ import { SupporterComponent } from './supporter/supporter.component';
     RightClickMenuComponent,
     RadialMenuComponent,
     ProfileComponent,
-    SupporterComponent
+    SupporterComponent,
+    QuestionEditComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
+  ],
+  entryComponents: [
+    QuestionEditComponent
   ],
   providers: [TreeService],
   bootstrap: [AppComponent]

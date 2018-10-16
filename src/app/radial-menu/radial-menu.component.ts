@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 declare var wheelnav: any;
 
@@ -7,9 +7,11 @@ declare var wheelnav: any;
   templateUrl: './radial-menu.component.html',
   styleUrls: ['./radial-menu.component.css']
 })
-export class RadialMenuComponent implements OnInit {
+export class RadialMenuComponent implements OnChanges, OnInit {
 
-  showRadialMenu = false;
+  @Input() showRadialMenu;
+  @Input() leftClickedCoordinates;
+  
   x = 100;
   y = 100;
 
@@ -20,18 +22,36 @@ export class RadialMenuComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.showRadialMenu = true;
+    if(this.showRadialMenu && this.showRadialMenu) {
+      console.log("AEAEAE")
+      this.x = this.leftClickedCoordinates.x;
+      this.y = this.leftClickedCoordinates.y;
 
-    let piemenu = new wheelnav('piemenu');
-    piemenu.clockwise = false;
-    piemenu.sliceInitPathFunction = piemenu.slicePathFunction;
-    piemenu.initPercent = 0.1;
-    piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
-    piemenu.createWheel();
-    piemenu.setTooltips([null, null, null]);
+      let piemenu = new wheelnav('piemenu');
+      piemenu.clockwise = false;
+      piemenu.sliceInitPathFunction = piemenu.slicePathFunction;
+      piemenu.initPercent = 0.1;
+      piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
+      piemenu.createWheel();
+      piemenu.setTooltips([null, null, null]);
+    }
   }
 
-  showRadialMenuOnClick() {
+  ngOnChanges(changes: SimpleChanges) {
+
+    if( this.leftClickedCoordinates != undefined && this.showRadialMenu ) {
+      console.log("AEAEAE")
+      this.x = this.leftClickedCoordinates.x;
+      this.y = this.leftClickedCoordinates.y;
+
+      let piemenu = new wheelnav('piemenu');
+      piemenu.clockwise = false;
+      piemenu.sliceInitPathFunction = piemenu.slicePathFunction;
+      piemenu.initPercent = 0.1;
+      piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
+      piemenu.createWheel();
+      piemenu.setTooltips([null, null, null]);
+    }
   }
 
 }

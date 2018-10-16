@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as $ from 'jquery';
+import { QuestionEditComponent } from '../question-edit/question-edit.component';
 
 @Component({
   selector: 'app-right-click-menu',
@@ -14,7 +16,7 @@ export class RightClickMenuComponent implements OnChanges, OnInit  {
   x = 500;
   y = 500;
 
-  constructor() { }
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
 
@@ -26,14 +28,15 @@ export class RightClickMenuComponent implements OnChanges, OnInit  {
       return false;
     });
 
-    console.log("hello from right click");
-
     if( this.rightClickedCoordinates != undefined ) {
       this.x = this.rightClickedCoordinates.x;
       this.y = this.rightClickedCoordinates.y;
     }
-    
-    console.log(this.x + " " + this.y);
+  }
+
+  open() {
+    const modalRef = this.modalService.open(QuestionEditComponent);
+    modalRef.componentInstance.name = 'World';
   }
 
 }
