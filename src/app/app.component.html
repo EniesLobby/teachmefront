@@ -4,9 +4,17 @@
     
     (leftClickedCoordinates)='performLeftClick($event)' 
     (showRadialMenu)='hideRadialMenu($event)'
+
+    (current_node)='setCurrentNode($event)'
+    (clicked_node_children)='setClickedNodeChildren($event)'
     
+    [refreshTree]="refreshTree"
     ></app-tree>
-<app-right-click-menu [rightClickedCoordinates]="rightClickedCoordinates" [showContextMenu]="showContextMenu"></app-right-click-menu>
+    <app-right-click-menu 
+    [rightClickedCoordinates]="rightClickedCoordinates" 
+    [showContextMenu]="showContextMenu"
+    [current_node]="current_node"
+    [clicked_node_children]="clicked_node_children"
+    (refreshTree)="refreshTree" ></app-right-click-menu>
 
 <app-profile></app-profile>
-<app-radial-menu [leftClickedCoordinates]="leftClickedCoordinates" [showRadialMenu]="showRadialMenu"></app-radial-menu>

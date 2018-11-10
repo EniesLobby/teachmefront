@@ -1,4 +1,4 @@
-import { Component, OnChanges, Renderer, ElementRef, Input, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, OnChanges, Renderer, ElementRef, Input, Output, EventEmitter, Inject, SimpleChanges } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
@@ -10,12 +10,22 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class AppComponent {  
   
   title = 'TEACHME';
+
   @Input() rightClickedCoordinates;
   @Input() showContextMenu;
 
   @Input() leftClickedCoordinates;
   @Input() showRadialMenu;
 
+  @Input() current_node;
+  @Input() clicked_node_children;
+
+  @Input() refreshTree = false;
+
+  ngOnChanges(changes: SimpleChanges) {
+     console.log(this.refreshTree);
+  }
+ 
   public performRightClick(event) {
     
     this.hideContextMenu(true);
@@ -24,9 +34,9 @@ export class AppComponent {
 
   public performLeftClick(event) {
 
+    console.log("event", event);
     this.hideRadialMenu(true);
     this.leftClickedCoordinates = event;
-    console.log("left click performed")
   }
 
   public hideContextMenu(state) {
@@ -39,6 +49,14 @@ export class AppComponent {
     this.showRadialMenu = state;
 
     return false;
+  }
+
+  public setCurrentNode(event) {
+    this.current_node = event;
+  }
+
+  public setClickedNodeChildren(event) {
+    this.clicked_node_children = event;
   }
 
 }

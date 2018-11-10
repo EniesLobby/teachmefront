@@ -1,12 +1,21 @@
 <div class="modal-header">
-  <h4 class="modal-title">Hi there!</h4>
+  <h4 class="modal-title">Edit Question</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
+<form [formGroup]="myForm" (ngSubmit)="submitForm()">
 <div class="modal-body">
-  <p>Hello, {{name}}!</p>
+    <div class="form-group">
+      <label for="question_label">Label</label>
+      <input type="email" class="form-control" id="question_label" placeholder="" formControlName="questionLabel">
+      <hr>
+      <label for="question">Question</label>
+      <quill-editor [style]="{height: '250px'}" id="question" formControlName="textArea" (onContentChanged)="onChange($event);"></quill-editor>
+    </div>
 </div>
 <div class="modal-footer">
+  <button class="btn btn-success">Update</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>
+</form>

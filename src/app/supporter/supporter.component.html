@@ -1,5 +1,13 @@
-<div class="supporter" [ngStyle]="{'left.px': x, 'top.px': y}">
-  <p>
-    supporter works!
-  </p>
+<div id="mySidenav_right" class="sidenav_right">
+<hr />
+  <div class="list-group" *ngIf="node_present">
+      <p class="h5">Question: </p>
+      {{ node_for_right_menu.question }}
+
+      <p class="h5">Answers: </p>
+      <div *ngFor="let child of children">{{ child.answer }}</div>
+      <hr />
+      <button (click)="toggleChildren()">Toggle Children</button>
+  </div>
+
 </div>

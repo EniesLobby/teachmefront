@@ -1,14 +1,17 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<div id="supporter" *ngIf="showRadialMenu" [ngStyle]="{'left.px': x - 111, 'top.px': y - 111}">
-  <div id='piemenu' data-wheelnav
-  data-wheelnav-slicepath='DonutSlice'
-  data-wheelnav-rotateoff
-  data-wheelnav-navangle='270'
-  data-wheelnav-titleheight='45'
-  data-wheelnav-cssmode 
-  data-wheelnav-init>
-   <div data-wheelnav-navitemicon='check' onmouseup='alert("Place your logic here.");'></div>
-   <div data-wheelnav-navitemicon='check' onmouseup='alert("Place your logic here.");'></div>
-   <div data-wheelnav-navitemicon='check' onmouseup='alert("Place your logic here.");'></div>
- </div>
+<div class="radial_menu" [ngStyle]="{'left.px': x, 'top.px': y - 10}">
+  <input type="checkbox" id="toggle" />
+  <label id="show-menu" for="toggle">
+    <div class="btn">
+      <i class="material-icons md-36 toggleBtn menuBtn">menu</i>
+      <i class="material-icons md-36 toggleBtn closeBtn">close</i>
+    </div>
+    <div class="btn">
+        <i class="material-icons">visibility_off</i>
+    </div>
+    <div class="btn">
+      <p (click)="toggleClick()">toggle</p>
+    </div>
+  </label>
 </div>

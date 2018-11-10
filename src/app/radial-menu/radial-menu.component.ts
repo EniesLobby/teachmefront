@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TreeService } from '../tree/tree.service';
 
 declare var wheelnav: any;
 
@@ -7,51 +8,34 @@ declare var wheelnav: any;
   templateUrl: './radial-menu.component.html',
   styleUrls: ['./radial-menu.component.css']
 })
-export class RadialMenuComponent implements OnChanges, OnInit {
-
-  @Input() showRadialMenu;
+export class RadialMenuComponent implements OnInit, OnChanges {
+      
   @Input() leftClickedCoordinates;
   
-  x = 100;
-  y = 100;
+  x: any;
+  y: any;
 
-  first_option = "toggle";
-  second_option = "hide";
-  third_option = "delete";
-
-  constructor() { }
-
+  constructor(private treeService: TreeService) {
+  }
+  
   ngOnInit() {
-    if(this.showRadialMenu && this.showRadialMenu) {
-      console.log("AEAEAE")
-      this.x = this.leftClickedCoordinates.x;
-      this.y = this.leftClickedCoordinates.y;
-
-      let piemenu = new wheelnav('piemenu');
-      piemenu.clockwise = false;
-      piemenu.sliceInitPathFunction = piemenu.slicePathFunction;
-      piemenu.initPercent = 0.1;
-      piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
-      piemenu.createWheel();
-      piemenu.setTooltips([null, null, null]);
-    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
 
-    if( this.leftClickedCoordinates != undefined && this.showRadialMenu ) {
-      console.log("AEAEAE")
+    $("#nodeContextMenu").on("contextmenu", function(e) {
+      return false;
+    });
+
+    if( this.leftClickedCoordinates != undefined ) {
       this.x = this.leftClickedCoordinates.x;
       this.y = this.leftClickedCoordinates.y;
-
-      let piemenu = new wheelnav('piemenu');
-      piemenu.clockwise = false;
-      piemenu.sliceInitPathFunction = piemenu.slicePathFunction;
-      piemenu.initPercent = 0.1;
-      piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
-      piemenu.createWheel();
-      piemenu.setTooltips([null, null, null]);
     }
   }
+
+  toggleClick() {
+    this.treeService.sendMessage("toggle", "Ae");
+  }
+
 
 }
