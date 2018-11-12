@@ -1,8 +1,14 @@
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
-  <a href="#" (click)="createTree()">Create Tree</a>
-  <a href="#" (click)="deleteAllNodes()">Delete All Nodes</a>
+  <div id="container">
+      <div class="drop-shadow lifted">
+          <a href="#" (click)="createTree()">Create Tree</a>
+          <a href="#" (click)="deleteAllNodes()">Delete All Nodes</a>
+        <hr />
+      </div>
+    </div>
 </div>
+
 
 <!-- Use any element to open the sidenav -->
 <div id="profile" (click)="openNav()"  [ngStyle]="{'left.px': x, 'top.px': y}" *ngIf="showProfileIcon"></div>

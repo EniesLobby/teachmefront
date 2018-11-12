@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
   
     /* Set the width of the side navigation to 250px */
   public openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("mySidenav").style.width = "300px";
     this.showProfileIcon = false;
   }
   

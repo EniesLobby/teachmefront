@@ -25,7 +25,7 @@ export class TreeComponent implements OnChanges {
   @Input() public zoom: any;
   @Input() public label_to_show = "id";
 
-  current_rootId: any = 8;
+  current_rootId: any = 21;
 
   @Input() refreshTree;
 
@@ -52,13 +52,17 @@ export class TreeComponent implements OnChanges {
             this.ngOnInit();
           }  
     
-          if(message.text == 'toggle') {
-            this.refresh("", message.data)
+          if(message.text == 'toggle_on') {
+            this.refresh("", "on", message.data);
           }
-    
+          
+          if(message.text == 'toggle_off') {
+            this.refresh("", "off", message.data);
+          }
+          
           if(message.text == 'label') {
             this.label_to_show = message.data;
-            this.refresh(message.data, "")
+            this.refresh(message.data, "", "");
           }
 
           if(message.text == 'rootId') {
@@ -109,7 +113,7 @@ export class TreeComponent implements OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): any { }
 
-  refresh(label, toggle) {
+  refresh(label, status, toggle) {
     this.render(  
         this.rightClickedCoordinates, 
         this.showContextMenu, 
@@ -118,6 +122,7 @@ export class TreeComponent implements OnChanges {
         this.current_node,
         this.clicked_node_children,
         label,
+        status,
         toggle
         );
   }
@@ -132,6 +137,7 @@ export class TreeComponent implements OnChanges {
           this.current_node,
           this.clicked_node_children,
           this.label_to_show,
+          "",
           ""
         )); // Now has value;
 
@@ -163,6 +169,7 @@ export class TreeComponent implements OnChanges {
                 current_node, 
                 clicked_node_children,
                 label,
+                status,
                 toggle) {
     
     var self = this;
@@ -189,14 +196,16 @@ export class TreeComponent implements OnChanges {
     if(toggle != undefined) {
       
       var nodeId = toggle.id;
+      console.log("toggle.id", toggle.id);
       self.node_visibility = !self.node_visibility;
 
-      if(self.node_visibility) {
-        cy.nodes("#" + nodeId).successors().style("visibility", "visible");
-      } else {
+      if(status == "off") {
         cy.nodes("#" + nodeId).successors().style("visibility", "hidden");
+      } 
+      
+      if(status == "on") {
+        cy.nodes("#" + nodeId).successors().style("visibility", "visible");
       }
-
     }
 
     // click on the edge
@@ -306,7 +315,7 @@ export class TreeComponent implements OnChanges {
     
     for(var i = 0; i < nodes.size(); i ++ ) {
       var local_label = nodes[i].data().question;
-      local_label = local_label + " #" + nodes[i].data().id;
+      //local_label = local_label + " #" + nodes[i].data().id;
       nodes[i].style("label", local_label);
     }
     

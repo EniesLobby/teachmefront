@@ -40,6 +40,14 @@ export class TreeService {
         return this.http.put(this.Url + "node/" + node.id, node, httpOptions);
     }
 
+    deleteNode(nodeId: any) {
+        return this.http.delete(this.Url + "deleteNode/" + nodeId, httpOptions).subscribe();
+    }
+
+    deleteAnswer(nodeId: any, answer_id: any) {
+        return this.http.delete(this.Url + "/deleteAnswer/node/" + nodeId + "/answer/" + answer_id, httpOptions);
+    }
+
     AddNode(node: any, id) {
         let body = JSON.stringify(node);
         let received_id;
@@ -64,7 +72,7 @@ export class TreeService {
         return this.http.get(this.Url + 'node/information/' + nodeId + '/');
     }
 
-    updateInformation(nodeId: any, answer_id: any, notes: string, information: string) {
+    async updateInformation(nodeId: any, answer_id: any, notes: string, information: string) {
 
         let payLoad = {
             "answer_id": answer_id,
@@ -72,17 +80,7 @@ export class TreeService {
             "notes": notes
         };
 
-        this.http.post(this.Url + "node/information/add/"+ nodeId +"/answer/", payLoad, httpOptions).subscribe(
-            val => {
-                console.log("POST call successful value returned in body", 
-                            val);
-            },
-            response => {
-                console.log("POST call in error", response);
-            },
-            () => {
-                console.log("The POST observable is now completed.");
-            });
+        await this.http.post(this.Url + "node/information/add/"+ nodeId +"/answer/", payLoad, httpOptions).toPromise();
     }
 
     deleteAllNodes() {

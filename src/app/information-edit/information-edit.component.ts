@@ -81,6 +81,27 @@ export class InformationEditComponent implements OnInit {
     return str.split('').reverse().join('');
   }
 
+  equalStringCheck(str1, str2) {
+    // example:
+    //   str1 = "21-22-20"
+    //   str2 = "20-22-21"
+
+    let first_array = str1.split("-").sort();
+    let second_array = str2.split("-").sort();
+
+    if(first_array.length != second_array.length) {
+      return false;
+    } else {
+      for(let i = 0; i < first_array.length; i ++ ) {
+        if(first_array[i] != second_array[i]) {
+          return false;
+        }
+      }
+    }
+
+    return true
+  }
+
   clickedNode(id) {
 
     if(id == this.node.id) {
@@ -96,32 +117,36 @@ export class InformationEditComponent implements OnInit {
     }
 
     this.clickedId = id;
-    console.log("clickedNode", id);
 
     let multiId: string = "";
     for(let i = 0; i < this.selectedNodes.length; i ++ ) {
+      if(this.selectedNodes.length == 1 && this.selectedNodes[0] == this.node.id) {
+        multiId = this.selectedNodes[0];
+      }
+
       if(String(this.selectedNodes[i]) != this.node.id) {
         multiId = multiId + this.selectedNodes[i] + "-";
       }
     }
 
-    multiId = multiId.substring(0, multiId.length - 1);
+    if(multiId.includes("-")) {
+      multiId = multiId.substring(0, multiId.length - 1);
+    }
+    
     console.log("multiId", multiId);
 
     this.currentClickedId = multiId;
 
     let current_information;
 
-
     for(let i = 0; i < this.information.length; i ++ ) {
-      if(this.information[i].idOfNodes == multiId || this.information[i].idOfNodes == this.reverse(multiId)) {
+      //if(this.information[i].idOfNodes == multiId || this.information[i].idOfNodes == this.reverse(multiId)) {
+        if(this.equalStringCheck(this.information[i].idOfNodes, multiId)) {
         console.log("checked")
         current_information = this.information[i].information;
       }
     }
 
-    console.log("current_information", current_information);
-  
     this.myForm.patchValue({
       textArea: current_information
     })
@@ -145,20 +170,17 @@ export class InformationEditComponent implements OnInit {
       }
       this.information.push(newInformation);
     }
-
-    console.log("information", this.information);
-    console.log($event);
-    
-    /** 
-    idOfNodes: "6-7"
-    information: "Informa
-    */
   }
 
-  public submitForm() {
+
+  public async submitForm() {
     for(let i = 0; i < this.information.length; i ++ ) {
-      this.treeService.updateInformation(this.node.id, this.information[i].idOfNodes, this.information[i].notes, this.information[i].information);
+      await this.treeService.updateInformation( this.node.id, 
+                                          this.information[i].idOfNodes, 
+                                          this.information[i].notes, 
+                                          this.information[i].information);
     }
+
     this.activeModal.close(this.myForm.value);
   }
 
@@ -360,27 +382,24 @@ export class InformationEditComponent implements OnInit {
     
     // click outside of the tree
     cy.on('tap', function(event) {
-    // target holds a reference to the originator
-    // of the event (core or element)
-    
-    var evtTarget = event.target;
-    // return to the normal state of the node
-    if( evtTarget === cy ) {
-        cy.$("node").style({
-                  'background-color': '#4db8ff',
-                  'width': 60,
-                  'height': 60
-                });
-        self.selectedNodes = [];
-        self.answerstoShow = [];
-        self.showTextEditor = false;
-        self.showQuestionClickedMessage = false;
-        self.myForm.patchValue({
-          textArea: ""
-        })
-    } else {
-
-    }
+      // target holds a reference to the originator
+      // of the event (core or element)
+      
+      var evtTarget = event.target;
+      // return to the normal state of the node
+      if( evtTarget === cy ) {
+          cy.$("node").style({
+                    'background-color': '#4db8ff',
+                    'width': 60,
+                    'height': 60
+                  });
+          self.selectedNodes = [];
+          self.answerstoShow = [];
+          self.showTextEditor = false;
+          self.showQuestionClickedMessage = false;
+      } else {
+  
+      }
     });
 
     // right click

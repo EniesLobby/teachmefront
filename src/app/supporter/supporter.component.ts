@@ -15,6 +15,7 @@ export class SupporterComponent implements OnChanges {
   children: any;
   label = "question";
   answer_off_or_on: boolean = true;
+  toggleSwitcher: boolean = true;
 
   supporterForm: FormGroup;
 
@@ -56,9 +57,18 @@ export class SupporterComponent implements OnChanges {
     this.getChildren();
   }
 
+  public deleteNode() {
+    this.treeService.deleteNode(this.node_for_right_menu.id);
+  }
+
   public toggleChildren() {
     this.treeService.clearMessage();
-    this.treeService.sendMessage("toggle", this.node_for_right_menu);
+    this.toggleSwitcher = !this.toggleSwitcher;
+    if(this.toggleSwitcher) {
+      this.treeService.sendMessage("toggle_on", this.node_for_right_menu);
+    } else {
+      this.treeService.sendMessage("toggle_off", this.node_for_right_menu);
+    }
   }
 
   public setLabel() {
