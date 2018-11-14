@@ -17,6 +17,7 @@ import { QuestionEditComponent } from './question-edit/question-edit.component';
 import { AnswersEditComponent } from './answers-edit/answers-edit.component';
 import { InformationEditComponent } from './information-edit/information-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HelperComponent } from './helper/helper.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SupporterComponent,
     QuestionEditComponent,
     AnswersEditComponent,
-    InformationEditComponent
+    InformationEditComponent,
+    HelperComponent
   ],
   imports: [
     BrowserModule,

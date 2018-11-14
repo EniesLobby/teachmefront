@@ -44,12 +44,18 @@ export class SupporterComponent implements OnChanges {
       this.node_present = true;
       console.log("node_for_right_menu", this.node_for_right_menu);
       if(this.node_for_right_menu.question == "") {
-        this.node_present = false;
+        this.node_for_right_menu = [
+          {
+            "answer": "answers are empty",
+            "question": "question is empty"
+          }
+        ]
       }
     } else {
       this.node_for_right_menu = [
         {
-          "data": "no data"
+          "answer": "answers are empty",
+          "question": "question is empty"
         }
       ]
     }
@@ -59,6 +65,7 @@ export class SupporterComponent implements OnChanges {
 
   public deleteNode() {
     this.treeService.deleteNode(this.node_for_right_menu.id);
+    this.treeService.sendMessage("refresh", null);
   }
 
   public toggleChildren() {

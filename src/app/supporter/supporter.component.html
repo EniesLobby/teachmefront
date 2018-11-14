@@ -1,6 +1,6 @@
 <div id="mySidenav_right" class="sidenav_right">
 <hr />
-  <div id="container" *ngIf="node_present">
+  <div id="container" *ngIf="node_present; else showTempHelp">
     <div class="drop-shadow lifted">
       <div class="list-group">
         <p class="h5">Question: </p>
@@ -19,4 +19,16 @@
       <hr />
     </div>
   </div>
+  
+  <ng-template #showTempHelp>
+    <div id="container">
+      <div class="drop-shadow lifted">
+        <div class="list-group">
+          Click on node to see question and answers of the node
+        </div>
+        <hr />
+      </div>
+    </div>
+  </ng-template>
+
 </div>

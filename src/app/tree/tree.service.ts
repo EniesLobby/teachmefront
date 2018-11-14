@@ -61,7 +61,7 @@ export class TreeService {
     }
 
     createTree() {
-        return this.http.post(this.Url + "createTree", "", httpOptions)
+        return this.http.post(this.Url + "createTree", "", httpOptions);
     }
 
     getChildren(nodeId: any) {

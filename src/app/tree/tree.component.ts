@@ -25,7 +25,7 @@ export class TreeComponent implements OnChanges {
   @Input() public zoom: any;
   @Input() public label_to_show = "id";
 
-  current_rootId: any = 21;
+  current_rootId: any = 85;
 
   @Input() refreshTree;
 
@@ -68,6 +68,7 @@ export class TreeComponent implements OnChanges {
           if(message.text == 'rootId') {
             console.log("message.data", message.data);
             this.current_rootId = message.data;
+            console.log("this.currentId", this.current_rootId);
             this.ngOnInit();
           }
       }
@@ -123,23 +124,27 @@ export class TreeComponent implements OnChanges {
         this.clicked_node_children,
         label,
         status,
-        toggle
+        toggle,
+        this.current_rootId
         );
   }
 
   public ngOnInit() {
-      this.getTree().then(() =>
-      this.render(
-          this.rightClickedCoordinates, 
-          this.showContextMenu, 
-          this.leftClickedCoordinates, 
-          this.showRadialMenu, 
-          this.current_node,
-          this.clicked_node_children,
-          this.label_to_show,
-          "",
-          ""
-        )); // Now has value;
+      if(this.current_rootId != undefined) {
+        this.getTree().then(() =>
+        this.render(
+            this.rightClickedCoordinates, 
+            this.showContextMenu, 
+            this.leftClickedCoordinates, 
+            this.showRadialMenu, 
+            this.current_node,
+            this.clicked_node_children,
+            this.label_to_show,
+            "",
+            "",
+            this.current_rootId
+          )); // Now has value;
+      }
 
       $("body").on("contextmenu", function(e) {
         return false;
@@ -170,7 +175,8 @@ export class TreeComponent implements OnChanges {
                 clicked_node_children,
                 label,
                 status,
-                toggle) {
+                toggle,
+                rootId) {
     
     var self = this;
     // Initialization of the tree instance
@@ -191,6 +197,33 @@ export class TreeComponent implements OnChanges {
       x: 140,
       y: 60 
     });
+
+    // set root
+
+    if(rootId != undefined ) {
+      var options = {
+        name: 'breadthfirst',
+        
+        fit: false, // whether to fit the viewport to the graph
+        directed: true, // whether the tree is directed downwards (or edges can point in any direction if false)
+        padding: 30, // padding on fit
+        circle: false, // put depths in concentric circles if true, put depths top down if false
+        spacingFactor: 1.75, // positive spacing factor, larger => more space between nodes (N.B. n/a if causes overlap)
+        boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
+        avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
+        nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
+        roots: "#" + rootId, // the roots of the trees
+        maximalAdjustments: 0, // how many times to try to position the nodes in a maximal way (i.e. no backtracking)
+        animate: false, // whether to transition the node positions
+        animationDuration: 1000, // duration of animation in ms if enabled
+        animationEasing: undefined, // easing of animation if enabled,
+        animateFilter: function ( node, i ){ return true; }, // a function that determines whether the node should be animated.  All nodes animated by default on animate enabled.  Non-animated nodes are positioned immediately when the layout starts
+        ready: undefined, // callback on layoutready
+        stop: undefined, // callback on layoutstop
+        transform: function (node, position ){ return position; } // transform a given node position. Useful for changing flow direction in discrete layouts
+        };
+      cy.layout(options).run();
+    }
     
     // Toggle given node if called
     if(toggle != undefined) {
@@ -225,6 +258,13 @@ export class TreeComponent implements OnChanges {
         'border-color': '#99C3E0',
       })  
     })
+
+    //send root Id to show info
+    for(var i = 0; i < cy.nodes().length; i ++ ) {
+      if(cy.nodes()[i].data().id == cy.nodes()[i].data().rootId) {
+        this.treeService.sendMessage("root_position", cy.nodes()[i].renderedPosition());
+      }
+    }
 
     // hover node
     cy.on('mouseout', 'node', function(evt) {

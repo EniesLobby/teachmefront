@@ -20,6 +20,8 @@ export class ProfileComponent implements OnInit {
   
     /* Set the width of the side navigation to 250px */
   public openNav() {
+
+    this.treeService.sendMessage("showHelperProfile", false);
     document.getElementById("mySidenav").style.width = "300px";
     this.showProfileIcon = false;
   }
@@ -36,6 +38,7 @@ export class ProfileComponent implements OnInit {
           console.log("POST call successful value returned in body", 
                       val);
           this.treeService.sendMessage("rootId", val);
+          this.treeService.sendMessage("showRootHelper", val);
       },
       response => {
           console.log("POST call in error", response);
@@ -47,6 +50,7 @@ export class ProfileComponent implements OnInit {
   
   public deleteAllNodes() {
     this.treeService.deleteAllNodes();
+    this.treeService.sendMessage("refresh", null);
   }
 
 }

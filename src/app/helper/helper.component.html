@@ -1,0 +1,63 @@
+<div id="helper_profile" *ngIf="showHelperProfile">
+  <div id="arrow_profile"></div>
+  <div id="text_profile" class="font-weight-normal">
+    {{ profileHelperText }}
+  </div>
+  <button  class="gotit button button2" (click)="showHelperProfile=!showHelperProfile">got it!</button>
+</div>
+<div id="helper_supporter" *ngIf="showHelperSupporter">
+  <div id="text_supporter" class="font-weight-normal">
+    {{ supporterHelperText }}
+  </div>
+  <button  class="gotit button button2" (click)="showHelperSupporter=!showHelperSupporter">got it!</button>
+</div>
+<div id="helper_rootNode" *ngIf="showHelperRoot" [ngStyle]="{'left.px': x-50, 'top.px': y-30}">
+  <div id="text_root" class="font-weight-normal">
+    {{ rootHelperText }}
+  </div>
+  <button  class="gotit button button2" (click)="showHelperRoot=!showHelperRoot">got it!</button>
+</div>
+<div>
+  <div class="radial_menu">
+      <input type="checkbox" id="toggle" />
+      <label id="show-menu" for="toggle">
+        <div class="btn">
+          <div id="helpButton" *ngIf="helpButton" class="toggleBtn menuBtn"></div>
+          <i class="material-icons md-36 toggleBtn closeBtn">close</i>
+        </div>
+        <div class="btn" (click)="helpButtonClick()">
+            <a href="">
+                <div class="button1">
+                    <div class="button-text visibility">
+                      <i class="material-icons md-48" style="font-size: 60px !important;">visibility</i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="btn">
+            <a href="">
+                <div class="button1">
+                    <div class="button-text tutorial"> 
+                      <i class="material-icons md-48" style="font-size: 60px !important;">list</i>
+                    </div>
+                </div>
+            </a>
+        </div>
+      </label>
+
+      <div id="popup_tutorial" class="emailcontainer">
+          <div id="text_popup_tutorial" class="font-weight-normal">Show short tutorial</div>
+      </div>
+      
+      <div id="popup_visibility" class="emailcontainer">
+          <div id="text_popup_visibility" class="font-weight-normal">Show helping messages</div>
+      </div>
+  </div>
+</div>
+
+<div id="helper_helpButton" *ngIf="showHelperHelpButton">
+  <div id="text_helpButton" class="font-weight-normal">
+    {{ helpButtonHelperText }}
+  </div>
+  <button  class="gotit button button2" (click)="showHelperHelpButton=!showHelperHelpButton" style="left:0px">got it!</button>
+</div>

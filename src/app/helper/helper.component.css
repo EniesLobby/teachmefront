@@ -1,0 +1,251 @@
+
+#helper_helpButton {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 200px;
+    z-index: 10;
+    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    pointer-events: none;
+}
+
+#helper_profile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400px;
+    height: 200px;
+    z-index: 10;
+    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    pointer-events: none;
+  }
+
+#arrow_profile {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    z-index: 10;
+    border-style: solid;
+    border-color:white;
+    border-width: 3px;
+    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    pointer-events: none;
+}
+
+#text_profile {
+    position: relative;
+    padding-top: 10px;
+    padding-left: 15px;
+    font-size: 17px;
+}
+
+.gotit {
+    pointer-events: visible;
+    position: absolute;
+    bottom: 15px;
+    right: 0px;
+}
+
+#text_helpButton {
+    position: relative;
+    padding-top: 10px;
+    padding-left: 15px;
+    font-size: 17px;
+    pointer-events: none;
+}
+
+#helper_supporter {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 400px;
+    height: 350px;
+    z-index: 10;
+    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    pointer-events: none;
+    margin: 0 auto;
+}
+
+#helper_rootNode {
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    z-index: 10;
+    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    pointer-events: none;
+}
+
+
+#text_supporter {
+    position: absolute;
+    bottom: 55px;
+    left: 15px;
+    right: 0;
+}
+
+#text_root {
+    position: absolute;
+    bottom: 45px;
+    left: 15px;
+    right: 0;
+}
+
+#helpButton {
+    background-image: url(../../data/img/question.svg);
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 100px;
+    opacity: 0.5;
+}
+
+
+/* HELPER RADIAL MENU */
+
+
+input {position: absolute; display: none}
+
+.radial_menu {
+  margin: 0 auto;
+  position: absolute;
+  bottom: 150px;
+  right: 150px;
+}
+
+.btn {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.material-icons.md-36 { font-size: 36px; color: rgba(116, 187, 253, 0.9); }
+
+
+.btn {
+  background:rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,1);
+  
+  -webkit-transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.btn:not(:first-child) {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  z-index: -2;
+  
+  -webkit-transition: all 0.6s cubic-bezier(.87,-.41,.19,1.44);
+  transition: all 0.6s cubic-bezier(.87,-.41,.19,1.44);
+}
+
+.btn:nth-child(2) {top:0px;-webkit-transition-delay: 0s;transition-delay: 0s}
+.btn:nth-child(3) {top:0px;left:0px;-webkit-transition-delay: 0.1s;transition-delay: 0.1s}
+.btn:nth-child(4) {left:0px;;-webkit-transition-delay: 0.2s;;transition-delay: 0.2s}
+.btn:nth-child(5) {top:0px;left:0px;-webkit-transition-delay: 0.3s;transition-delay: 0.3s}
+.btn:nth-child(6) {top:0px;-webkit-transition-delay: 0.4s;transition-delay: 0.4s}
+.btn:nth-child(7) {top:0px;left:0px;-webkit-transition-delay: 0.5s;transition-delay: 0.5s}
+.btn:nth-child(8) {left:0px;-webkit-transition-delay: 0.6s;transition-delay: 0.6s}
+.btn:nth-child(9) {top:0px;left:0px;-webkit-transition-delay: 0.7s;transition-delay: 0.7s}
+
+input#toggle:checked ~ #show-menu .btn:nth-child(2) {
+  top:-120px;opacity:1;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+input#toggle:checked ~ #show-menu .btn:nth-child(3) {
+  top:40px;left:-120px;opacity:1;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+input#toggle:checked ~ #show-menu .btn:nth-child(4) {
+  left:70px;opacity:1;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+input#toggle:checked ~ #show-menu .btn:nth-child(5) {
+  top :45px;left:50px;opacity:1;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+input#toggle:checked ~ #show-menu .btn:nth-child(6) {
+  top:150px;opacity:1;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+input#toggle:checked ~ #show-menu .btn:nth-child(7) {
+  top:100px;left:-100px;opacity:1;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+input#toggle:checked ~ #show-menu .btn:nth-child(8) {
+  left:-150px;opacity:1;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+input#toggle:checked ~ #show-menu .btn:nth-child(9) {
+  top:-100px;left:-100px;opacity:1;-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+.menuBtn, .closeBtn {
+  position: absolute;
+  transition: all 0.3s ease;
+}
+
+.closeBtn {
+  transform: translateY(50px);
+  opacity: 0;
+}
+
+input#toggle:checked ~ #show-menu .btn .menuBtn {
+  transform: translateY(-50px);
+  opacity: 0;
+}
+
+input#toggle:checked ~ #show-menu .btn .closeBtn {
+  transform: translateY(0px);
+  opacity: 1;
+}
+
+#popup_visibility {
+    position: absolute;
+    right: 0;
+    bottom: 0px;
+    width: 300px;
+    height: 100px;
+    background-color: rgba(0, 77, 230, 0.0); /*dim the background*/
+    pointer-events: none;
+}
+
+#popup_tutorial {
+    position: absolute;
+    right: 0;
+    bottom: 0px;
+    width: 300px;
+    height: 100px;
+    background-color: rgba(0, 77, 230, 0.0); /*dim the background*/
+    pointer-events: none;
+}
+
+#text_popup_visibility {
+    position: relative;
+    top: 25px;
+    right: 0px;
+    text-shadow: -3px 6px 9px #717171;
+    pointer-events: none;
+}
+
+#text_popup_tutorial {
+    position: relative;
+    top: 25px;
+    right: 10px;
+    text-shadow: -3px 6px 9px #717171;
+    pointer-events: none;
+}
