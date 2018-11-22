@@ -42,7 +42,7 @@ export class RightClickMenuComponent implements OnChanges, OnInit  {
   }
 
   openEditQuestion() {
-    const modalRef = this.modalService.open(QuestionEditComponent);
+    const modalRef = this.modalService.open(QuestionEditComponent, { windowClass : "huge-modal"});
     modalRef.componentInstance.node = this.current_node;
     this.appComponent.hideContextMenu(false);
   }
@@ -56,7 +56,7 @@ export class RightClickMenuComponent implements OnChanges, OnInit  {
   }
 
   openEditInformation() {
-    const modalRef = this.modalService.open(InformationEditComponent, { windowClass : "myCustomModalClass"});
+    const modalRef = this.modalService.open(InformationEditComponent, { windowClass : "huge-modal"});
     modalRef.componentInstance.node = this.current_node;
     this.appComponent.hideContextMenu(false);
   }

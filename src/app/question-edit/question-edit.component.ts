@@ -1,11 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TreeService } from '../tree/tree.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { QuillEditorComponent } from 'ngx-quill';
-
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-
 import Quill from 'quill';
 
 @Component({
@@ -16,9 +12,7 @@ import Quill from 'quill';
 
 export class QuestionEditComponent implements OnInit {
 
-  myForm: FormGroup;
-
-  @Input() name;
+  questionEditForm: FormGroup;
   @Input() node: any;
 
   questionHtml: any;
@@ -33,7 +27,7 @@ export class QuestionEditComponent implements OnInit {
 
 
   private createForm() {
-    this.myForm = this.formBuilder.group(
+    this.questionEditForm = this.formBuilder.group(
       {
         textArea: "",
         questionLabel: ""
@@ -41,24 +35,27 @@ export class QuestionEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.myForm = this.formBuilder.group(
+    this.questionEditForm = this.formBuilder.group(
       {
         textArea: this.node.question,
         questionLabel: this.node.questionLabel
       }); 
+
+    this.onLabelChanges();
   }
 
-  sendMessage(): void {
+  updateTree(): void {
     this.treeService.sendMessage('refresh', null);
   }
 
   onChange($event) {
     this.questionHtml = $event.html;
     this.question = $event.text;
+
+    this.updateQuestion();
   }
 
-  submitForm() {
-    console.log(this.node);
+  updateQuestion() {
 
     if( this.question == undefined ) {
       this.question = this.node.question;
@@ -73,14 +70,15 @@ export class QuestionEditComponent implements OnInit {
 
     this.node.question = this.question;
     this.node.questionHtml = this.questionHtml;
-    this.node.questionLabel = this.myForm.value.questionLabel;
+    this.node.questionLabel = this.questionEditForm.value.questionLabel;
 
     console.log("node", this.node);
+    console.log("AEAEAEAEAE", this.questionEditForm.value.questionLabel);
 
     this.treeService.EditNode(this.node).subscribe(
       val => {
           console.log("POST call successful value returned in body", val);
-          this.sendMessage();
+          this.updateTree();
       },
       response => {
           console.log("POST call in error", response);
@@ -88,8 +86,14 @@ export class QuestionEditComponent implements OnInit {
       () => {
           console.log("The POST observable is now completed.");
       }
-  );
-    this.activeModal.close(this.myForm.value);
+    );
+  }
+
+  onLabelChanges(): void {
+    this.questionEditForm.valueChanges.subscribe(val => {
+      console.log(val);
+      this.updateQuestion();
+    });
   }
 
 

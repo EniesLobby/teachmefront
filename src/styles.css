@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
 
-.myCustomModalClass .modal-dialog {
-    max-width: 1000px;
+.huge-modal .modal-dialog {
+    max-width: 80%;
   }
 
 .contextmenu {

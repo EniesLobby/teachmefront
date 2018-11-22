@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">Edit Information</h4>
+  <h4 class="modal-title">Edit Question</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -8,45 +8,20 @@
 <div class="modal-body">
     <div class="container">
         <div class="row">
-          <div class="col-md-5">
-              <div id="information_helper">
-                  <h6>Here you can assign information according to the chosen node.</h6>
-                  Click on the nodes on the right tree to make it!
-
-                  <br />
-                  <br />
-
-                  <ul>
-                      <li>Click on the root to set general information about question</li>
-                      <li>Click on the corresponding nodes to set specific information for this answer</li>
-                      <li>Click on several children to set specific information for several answers</li>
-                  </ul>
-              </div>
-          </div>
           <div class="col">
-            <div id="cy_information"></div>
+            <app-question-edit [node]="node"></app-question-edit>
           </div>
         </div>
         <div class="row">
             <div class="col">
-                <div  class="alert alert-success" role="alert" *ngIf='showQuestionClickedMessage'>
-                    Set general information for the question
-                </div>
-                <div class="alert alert-success" role="alert" *ngIf='!showTextEditor && !showQuestionClickedMessage'>
-                    Click on nodes to set Information
-                </div>
-                <div class="alert alert-success" role="alert" *ngIf='showTextEditor && !showQuestionClickedMessage'>
-                    Information to show when selected following answers: 
-                    <ul class="list-group">
-                        <li  class="list-group-item" *ngFor="let answer of answerstoShow">{{ answer }}</li>
-                    </ul>
-                </div>
-                <quill-editor 
-                    [style]="{height: '400px'}" 
-                    formControlName="textArea" 
-                    (onContentChanged)="onChange($event);"
-                    *ngIf="showTextEditor"
-                    ></quill-editor>
+                <app-answers-edit></app-answers-edit>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                MENU + -
             </div>
         </div>
       </div>
@@ -56,23 +31,3 @@
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>
 </form>
-
-  <!--
-              <div class="form-group">
-                  <form [formGroup]="checkForm" (onChange)="checkFormChanged($event)">
-                    <label for="label_control">Show on the tree</label> <br />
-                    <input (click)='setQuestionLabel()' type="checkbox" value="" id="checkQuestionLabel">
-                    <label class="form-check-label" for="checkQuestionLabel">
-                        Question
-                    </label><br />
-                    <input (click)='setAnswerLabel()' type="checkbox" value="" id="checkAnswer">
-                    <label class="form-check-label" for="checkAnswer">
-                        Answers
-                    </label><br />
-                    <input (click)='setQuestionlabelLabel()' type="checkbox" value="" id="checkQuestion">
-                    <label class="form-check-label" for="checkQuestion">
-                        Question Labels
-                    </label>
-                  </form>
-                </div>
-//-->
