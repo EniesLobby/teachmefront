@@ -24,9 +24,14 @@ export class QuestionEditComponent implements OnInit {
   questionHtml: any;
   question: any;
 
+  label_helper: string = "";
+  question_edit: string = "";
+
   constructor(public activeModal: NgbActiveModal, private treeService: TreeService, private formBuilder: FormBuilder) {
     this.createForm();
   }
+
+
   private createForm() {
     this.myForm = this.formBuilder.group(
       {

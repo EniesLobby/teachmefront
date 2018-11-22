@@ -61,7 +61,7 @@ export class InformationEditComponent implements OnInit {
 
     this.treeService.getInformation(this.node.id).toPromise().then( data => {
       this.information = data;
-      if(typeof data[0] != "undefined" ){
+      if(typeof data[0] != "undefined" ) {
         this.currentClickedId = data[0].idOfNodes;
       }
     });
@@ -292,7 +292,11 @@ export class InformationEditComponent implements OnInit {
               'border-color': '#006bb3',
               'width': 60,
               'height': 60,
-              'font-size': 20
+              'font-size': 20,
+              'shape': "rectangle",
+              'labelValign': "middle",
+              "text-valign" : "center",
+              "text-halign" : "center"
           }
       }]
     });
@@ -336,9 +340,19 @@ export class InformationEditComponent implements OnInit {
       for(var i = 0; i < cy.nodes().size(); i ++ ) {
         if(cy.nodes()[i].data().id != root ) {
           console.log(cy.nodes()[i].data().id)
-            cy.$('#' + cy.nodes()[i].id()).position('y', 200);
+          cy.$('#' + cy.nodes()[i].id()).position('y', 200);
+          cy.$('#' + cy.nodes()[i].id()).style({
+            'width': 150 
+          });
         }
     }
+
+    //set design of the root node
+    cy.$('#' + root).style({
+      'width': 500,
+      'events': 'no',
+      'background-color': 'gray'
+    })
 
     // click on the edge
     cy.on('tap', 'edge', function(evt) {
@@ -363,9 +377,11 @@ export class InformationEditComponent implements OnInit {
 
           cy.$("#" + node.id()).style({
             'background-color': '#4db8ff',
-            'width': 60,
-            'height': 60
-          })  
+            'width': 150,
+            'height': 60,
+            'shape': 'rectangle'
+          })
+
         } else {
           cy.nodes("#" + node.id()).select();
           self.selectedNodes.push(node.id());
@@ -373,14 +389,16 @@ export class InformationEditComponent implements OnInit {
 
           cy.$("#" + node.id()).style({
             'background-color': '#b3e0ff',
-            'width': 60,
-            'height': 60
+            'width': 150,
+            'height': 60,
+            'shape': 'rectangle'
           })  
         }
         self.clickedNode(node.id());
     });
     
     // click outside of the tree
+    /**
     cy.on('tap', function(event) {
       // target holds a reference to the originator
       // of the event (core or element)
@@ -401,7 +419,7 @@ export class InformationEditComponent implements OnInit {
   
       }
     });
-
+ 
     // right click
     cy.on('cxttap', 'node', function(event) {
     
@@ -434,18 +452,18 @@ export class InformationEditComponent implements OnInit {
     })
     
     });
-
+*/
     var edges = cy.edges();
     var nodes = cy.nodes();
-
-    for(var i = 0; i < edges.length; i ++ ) {
+    
+     for(var i = 0; i < edges.length; i ++ ) {
       console.log(edges[i].target()[0].data().answer);
       edges[i].data("answer", edges[i].target()[0].data().answer);
       edges[i].target()[0].style("label", edges[i].data().answer);
       edges[i].style("font-size", "30");
     }
     
-
+  
     for(var i = 0; i < nodes.length; i ++ ) {
       if(nodes[i].data().id == root) {
         var local_label = nodes[i].data().question;

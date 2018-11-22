@@ -7,6 +7,16 @@
 <form [formGroup]="answersForm" (ngSubmit)="submitForm()">
   <div class="modal-body">
 
+      <div id="answers_help_container" *ngIf="showHelper">
+          <button  class="gotit_ans button button2" (click)="showHelper=!showHelper">x</button>
+          <div id="answers_text_helper" class="font-weight-normal">
+            <h5><p>Here you can manage answers related to the clicked node.</p></h5>
+            Click [Add Answer] and choose how these answers will be displayed (Radio, check box, dropdown or simple buttons).
+            [Delete] button currently doesnt work :)
+          </div>
+      </div>
+<br />
+
       <div class="form-group">
           <label for="exampleFormControlSelect2">Select Answer to edit</label>
           <select class="form-control" id="answer_choose" formControlName="answers" (ngModelChange)="onChange($event);" name="sel2">  
@@ -17,8 +27,22 @@
         <button type="button" class="btn btn-primary btn-sm" (click)='addNewAnswer()'>Add Answer</button>
         <button type="button" class="btn btn-danger btn-sm" *ngIf='showDeleteButton' (click)='deleteAnswer()'>Delete Answer</button>
       </div>
-      
-      <br />
+
+        <div class="form-group">
+            <quill-editor *ngIf="showTextEditor" [style]="{height: '250px'}" formControlName="textArea" (onContentChanged)="onChange($event);"></quill-editor>
+        </div>
+
+      </div>
+  <div class="modal-footer">
+    <button class="btn btn-success">Update</button>
+    <button type="button" class="btn btn-outline-dark" (click)="close()">Close</button>
+  </div>
+</form>
+
+
+<!--
+
+        <br />
         <label class="form-check-label">
           <input class="form-check-input" type="radio" name="exampleRadios" formControlName="exampleRadios" value="radio_buttons" checked>
             Radio buttons
@@ -41,14 +65,4 @@
               Buttons
           </label> <br />
         <br />
-
-        <div class="form-group">
-            <quill-editor *ngIf="showTextEditor" [style]="{height: '250px'}" formControlName="textArea" (onContentChanged)="onChange($event);"></quill-editor>
-        </div>
-
-      </div>
-  <div class="modal-footer">
-    <button class="btn btn-success">Update</button>
-    <button type="button" class="btn btn-outline-dark" (click)="close()">Close</button>
-  </div>
-</form>
+-->

@@ -1,23 +1,22 @@
 <div id="helper_profile" *ngIf="showHelperProfile">
   <div id="arrow_profile"></div>
-  <div id="text_profile" class="font-weight-normal">
-    {{ profileHelperText }}
+  <div id="text_profile" class="font-weight-normal" innerHTML="{{ profileHelperText }}">
   </div>
   <button  class="gotit button button2" (click)="showHelperProfile=!showHelperProfile">got it!</button>
 </div>
 <div id="helper_supporter" *ngIf="showHelperSupporter">
-  <div id="text_supporter" class="font-weight-normal">
-    {{ supporterHelperText }}
+  <div id="text_supporter" class="font-weight-normal" innerHTML="{{ supporterHelperText }}">
   </div>
   <button  class="gotit button button2" (click)="showHelperSupporter=!showHelperSupporter">got it!</button>
 </div>
 <div id="helper_rootNode" *ngIf="showHelperRoot" [ngStyle]="{'left.px': x-50, 'top.px': y-30}">
-  <div id="text_root" class="font-weight-normal">
-    {{ rootHelperText }}
+  <div id="text_root" class="font-weight-normal" innerHTML="{{ rootHelperText }}">
   </div>
   <button  class="gotit button button2" (click)="showHelperRoot=!showHelperRoot">got it!</button>
 </div>
 <div>
+
+  <!--
   <div class="radial_menu">
       <input type="checkbox" id="toggle" />
       <label id="show-menu" for="toggle">
@@ -54,10 +53,13 @@
       </div>
   </div>
 </div>
+//-->
+
+<div id="helpButton" *ngIf="helpButton" (click)="helpButtonClick()"></div>
 
 <div id="helper_helpButton" *ngIf="showHelperHelpButton">
-  <div id="text_helpButton" class="font-weight-normal">
-    {{ helpButtonHelperText }}
+  <div id="text_helpButton" class="font-weight-normal" innerHTML="{{ helpButtonHelperText }}">
   </div>
   <button  class="gotit button button2" (click)="showHelperHelpButton=!showHelperHelpButton" style="left:0px">got it!</button>
 </div>
+

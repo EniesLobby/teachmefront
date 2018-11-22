@@ -10,17 +10,21 @@ import { TreeService } from '../tree/tree.service';
 export class HelperComponent implements OnInit {
   
   subscription: Subscription;
-  show_help: boolean = true;
-  showHelperProfile: boolean = true;
-  showHelperSupporter: boolean = true;
+  show_help: boolean = false;
+  showHelperProfile: boolean = false;
+  showHelperSupporter: boolean = false;
   showHelperRoot: boolean = false;
   helpButton: boolean = true;
   showHelperHelpButton: boolean = true;
+
+  
+  showHelperQuestionEdit: boolean = true;
 
   profileHelperText: string = "";
   supporterHelperText: string = "";
   rootHelperText: string = "";
   helpButtonHelperText: string = "";
+  showHelperQuestionEditText: string ="";
 
   x;
   y;
@@ -31,7 +35,6 @@ export class HelperComponent implements OnInit {
         if(message.text == "root_position") {
           this.x = message.data.x;
           this.y = message.data.y;
-          this.showHelperRoot = true;
         }
 
         if(message.text == "show_help") {
@@ -46,15 +49,19 @@ export class HelperComponent implements OnInit {
           this.showHelperHelpButton = message.data;
         }
 
+        if(message.text == "showHelperQuestionEdit") {
+          this.showHelperQuestionEdit = message.data;
+        }
+
       }
     });
   }
 
   ngOnInit() {
-    this.profileHelperText = "Here you can manage your profile. Currently only creation of the tree is active.";
+    this.profileHelperText = "Here you can manage your profile.<br /> Currently only creation of the tree is active.";
     this.supporterHelperText = "This window will show you information about clicked node. You can delete node or toggle its children."
-    this.rootHelperText = "This is root node of the tree. To start right click on the tree, change question and add some answers!"
-    this.helpButtonHelperText = "Here you can get tutorials and activate help"
+    this.rootHelperText = "This is root node of the tree. With right click on the node you can: <ul><li>change question</li><li>manage answers</li><li>manage information</li>"
+    this.helpButtonHelperText = "Click on the help to activate supporting messages"
     
     $(document).ready(function(){
       $('#popup_visibility').hide();

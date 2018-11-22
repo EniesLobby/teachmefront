@@ -24,6 +24,7 @@ export class AnswersEditComponent implements OnInit {
   current_nodeId: any;
   showTextEditor: boolean = false;
   showDeleteButton: boolean = false;
+  showHelper: boolean = true;
 
   constructor(public activeModal: NgbActiveModal, private treeService: TreeService, private formBuilder: FormBuilder) {
     this.createForm();

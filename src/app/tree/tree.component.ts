@@ -25,7 +25,7 @@ export class TreeComponent implements OnChanges {
   @Input() public zoom: any;
   @Input() public label_to_show = "id";
 
-  current_rootId: any = 85;
+  current_rootId: any = 198;
 
   @Input() refreshTree;
 
@@ -294,8 +294,22 @@ export class TreeComponent implements OnChanges {
       // hide context menu on click
       showContextMenu.emit(false);
       showRadialMenu.emit(false);
-
+      
+      
       var node = evt.target;
+      current_node.emit(node.data());
+   
+      var pos = cy.$("#" + node.id()).renderedPosition();
+      var edgesFromJerry = cy.edges('edge[source="' + node.id() + '"]');
+      var jerryChildren = edgesFromJerry.targets();
+      
+      var children = [];
+      for (var i = 0; i < jerryChildren.length; i ++) { 
+        children.push(jerryChildren[i].data())
+      }
+      
+      clicked_node_children.emit(children);   
+      rightClickedCoordinates.emit(pos);
       
       // change background color when clicked
       cy.$("#" + node.id()).style({
@@ -407,7 +421,7 @@ export class TreeComponent implements OnChanges {
       })
 
       var node = event.target;
-      current_node.emit(node.data());
+      //current_node.emit(node.data());
 
       if( node === cy ) {
         
@@ -442,8 +456,8 @@ export class TreeComponent implements OnChanges {
         children.push(jerryChildren[i].data())
       }
       
-      clicked_node_children.emit(children);   
-      rightClickedCoordinates.emit(pos);
+//      clicked_node_children.emit(children);   
+//      rightClickedCoordinates.emit(pos);
 
     });
   }
