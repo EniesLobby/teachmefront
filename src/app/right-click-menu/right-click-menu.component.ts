@@ -1,11 +1,13 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TreeService } from '../tree/tree.service';
 import * as $ from 'jquery';
 import { QuestionEditComponent } from '../question-edit/question-edit.component';
 import { AnswersEditComponent } from '../answers-edit/answers-edit.component';
 import { InformationEditComponent } from '../information-edit/information-edit.component';
 import{ AppComponent } from '../app.component'
 import { nodeValue } from '@angular/core/src/view';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-right-click-menu',
@@ -19,13 +21,23 @@ export class RightClickMenuComponent implements OnChanges, OnInit  {
   @Input() rightClickedCoordinates;
   @Input() current_node;
   @Input() clicked_node_children;
-  
   @Output() refreshTree = new EventEmitter();
+
+  subscription: Subscription;
   
   x = 500;
   y = 500;
 
-  constructor(private modalService: NgbModal, private appComponent: AppComponent) { }
+  constructor(private modalService: NgbModal, private treeService: TreeService, private appComponent: AppComponent) { 
+    this.subscription = this.treeService.getMessage().subscribe(message => {
+      if(message != undefined) {
+          if(message.text == 'open_editor') {
+            this.current_node = message.data;
+            this.openEditInformation();
+          }  
+      }
+    });
+  }
 
   ngOnInit() { }
 
@@ -39,20 +51,6 @@ export class RightClickMenuComponent implements OnChanges, OnInit  {
       this.x = this.rightClickedCoordinates.x;
       this.y = this.rightClickedCoordinates.y;
     }
-  }
-
-  openEditQuestion() {
-    const modalRef = this.modalService.open(QuestionEditComponent, { windowClass : "huge-modal"});
-    modalRef.componentInstance.node = this.current_node;
-    this.appComponent.hideContextMenu(false);
-  }
-
-  openEditAnswers() {
-    const modalRef = this.modalService.open(AnswersEditComponent);
-    modalRef.componentInstance.node = this.current_node;
-    modalRef.componentInstance.children = this.clicked_node_children;
-    this.appComponent.hideContextMenu(false);
-    this.refreshTree.emit(true)
   }
 
   openEditInformation() {

@@ -7,7 +7,8 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import Quill from 'quill';
 import * as cytoscape from 'cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
-import * as $ from 'jquery'; 
+import * as $ from 'jquery';
+import { Subscription } from 'rxjs'; 
 
 
 @Component({
@@ -37,13 +38,20 @@ export class InformationEditComponent implements OnInit {
 
   currentClickedId: string = "";
   showTextEditor: boolean = false;
+
   showQuestionClickedMessage: boolean = false;
+  subscription: Subscription;
 
   answerstoShow = [];
   labelsToShow = [];
 
   constructor(private renderer : Renderer, public activeModal: NgbActiveModal, private treeService: TreeService, private formBuilder: FormBuilder) {
     this.createForm();
+
+    this.subscription = this.treeService.getMessage().subscribe(message => {
+      if(message != undefined) {
+      }
+    });
   }
 
   private createForm() {
@@ -58,7 +66,7 @@ export class InformationEditComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.treeService.sendMessage("radial_menu_toggle_off", "");
     this.treeService.getInformation(this.node.id).toPromise().then( data => {
       this.information = data;
       if(typeof data[0] != "undefined" ) {
@@ -101,6 +109,10 @@ export class InformationEditComponent implements OnInit {
   }
 
   clickedNode(id) {
+
+    if( typeof id == "undefined" ) {
+      return;
+    }
 
     if(id == this.node.id) {
       this.showQuestionClickedMessage = true;
@@ -170,15 +182,9 @@ export class InformationEditComponent implements OnInit {
     }
   }
 
-
   public async submitForm() {
-    for(let i = 0; i < this.information.length; i ++ ) {
-      await this.treeService.updateInformation( this.node.id, 
-                                          this.information[i].idOfNodes, 
-                                          this.information[i].notes, 
-                                          this.information[i].information);
-    }
-
+    this.treeService.sendMessage("submit_answers", "");
+    this.treeService.sendMessage("submit_question", "");
     this.activeModal.close(this.myForm.value);
   }
 

@@ -5,29 +5,26 @@
   </button>
 </div>
 <form [formGroup]="myForm" (ngSubmit)="submitForm()">
-<div class="modal-body">
-    <div class="container">
-        <div class="row">
-          <div class="col">
-            <app-question-edit [node]="node"></app-question-edit>
+  <div class="modal-body">
+      <div class="container">
+          <div class="row">
+            <div class="col">
+              <app-question-edit [node]="node"></app-question-edit>
+            </div>
+          </div>
+          <div class="row">
+                <app-answers-edit [node]="node"></app-answers-edit>
+          </div>
+          <div class="row">
+              <div class="col">
+              </div>
+              <div class="col">
+              </div>
           </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <app-answers-edit></app-answers-edit>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-            </div>
-            <div class="col">
-                MENU + -
-            </div>
-        </div>
-      </div>
-  </div>
-<div class="modal-footer">
-  <button class="btn btn-success">Update</button>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
-</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success">Update</button>
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    </div>
 </form>

@@ -25,12 +25,15 @@ export class TreeComponent implements OnChanges {
   @Input() public zoom: any;
   @Input() public label_to_show = "id";
 
-  current_rootId: any = 198;
+  current_rootId: any = 287;
+  selected_edges = [];
 
   @Input() refreshTree;
 
   public local_data: any;
   public node_visibility: boolean = false;
+
+  location = [];
 
   @Output() rightClickedCoordinates = new EventEmitter();
   @Output() showContextMenu = new EventEmitter();
@@ -194,8 +197,8 @@ export class TreeComponent implements OnChanges {
     cy.zoom(0.55);
     cy.center();
     cy.pan({
-      x: 140,
-      y: 60 
+      x: 300,
+      y: 160 
     });
 
     // set root
@@ -222,6 +225,7 @@ export class TreeComponent implements OnChanges {
         stop: undefined, // callback on layoutstop
         transform: function (node, position ){ return position; } // transform a given node position. Useful for changing flow direction in discrete layouts
         };
+
       cy.layout(options).run();
     }
     
@@ -241,11 +245,67 @@ export class TreeComponent implements OnChanges {
       }
     }
 
-    // click on the edge
+    if(self.location.length != 0) {
+      for(var i = 0; i < cy.nodes().length; i ++ ) {
+        for(var j = 0; j < self.location.length; j ++ ) {
+          if(cy.nodes()[i].data().id == self.location[j].nodeId) {
+            cy.nodes()[i].position({x: self.location[j].x, y: self.location[j].y});
+          }
+        }
+      }
+    }
+
+    // fill positions
+    for(var i = 0; i < cy.nodes().length; i ++ ) {
+      self.location.push({
+        nodeId: cy.nodes()[i].data().nodeId,
+        x: cy.nodes()[i].position().x,
+        y: cy.nodes()[i].position().y,
+      })
+    }
+
+    // end of drag
+    cy.on('position', 'node', function(evt) {
+      var node = evt.target;
+      for(var i = 0; i < cy.nodes().length; i ++ ) {
+        self.location.push({
+          nodeId: cy.nodes()[i].data().id,
+          x: cy.nodes()[i].position().x,
+          y: cy.nodes()[i].position().y,
+        })
+      }
+    });
+
+    // click on the edge [***INFORMATION MECHANISM*********]
     cy.on('tap', 'edge', function(evt) {
-      showContextMenu.emit(false)
-      var edge = evt.target;
-      console.log( 'tapped ' + edge.id() );
+
+      showContextMenu.emit(false);
+      var edge = evt.target;   
+      
+      // Check if edges is in the array
+      for(var i = 0; i < self.selected_edges.length; i ++ ) {
+        if(self.selected_edges[i] == edge.target().id()) {
+          self.selected_edges.splice(i, 1);
+        }
+      }
+    
+      edge.style({
+        'width': 14,
+        'line-color': '#0760ef'
+      });
+
+      self.selected_edges.push(edge.target().id());
+
+      var container = {
+        nodeId: edge.source().id(),
+        selected_edges: self.selected_edges,
+      }
+
+      self.treeService.sendMessage("button_position", {
+        x: (edge.source().renderedPosition().x + edge.target().renderedPosition().x) / 2,
+        y: (edge.source().renderedPosition().y + edge.target().renderedPosition().y) / 2,
+      })
+      self.treeService.sendMessage("view_add_information_button", container);
     });
 
     // mouseover node
@@ -256,7 +316,7 @@ export class TreeComponent implements OnChanges {
       cy.$("#" + node.id()).style({
         'border-width': 4,
         'border-color': '#99C3E0',
-      })  
+      })
     })
 
     //send root Id to show info
@@ -268,18 +328,38 @@ export class TreeComponent implements OnChanges {
 
     // hover node
     cy.on('mouseout', 'node', function(evt) {
-      var node = evt.target;
-      
+      var node = evt.target;   
       // change background color when hover
       cy.$("#" + node.id()).style({
         'border-width': 4,
         'border-color': '#006bb3',
-      })  
+      })
+      
+      cy.nodes('[question=""]').style({
+        'border-color': 'white',
+        'background-color': 'white',
+        "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+        "background-fit": "cover cover",
+        "background-image-opacity": 0.5
+      });
     })
 
-    // click on the node
-    cy.on('tap', 'node', function(evt) {
+    // hover edge
+    cy.on('mouseout', 'edge', function(evt) {
+      var edge = evt.target;
 
+
+    })
+
+    // set i sign on informated edge
+    for(var i = 0; i < cy.nodes().length; i ++ ) {
+      if(cy.nodes()[i].data().information == "true") {
+        
+      }
+    }
+
+    // click on the node
+    cy.on('tap', 'node', function(evt) {   
       cy.$("node").style({
         'background-color': '#4db8ff',
         'width': 90,
@@ -288,14 +368,16 @@ export class TreeComponent implements OnChanges {
       })
 
       cy.nodes('[question=""]').style({
-        'background-color': '#f1f1f1'
+        'border-color': 'white',
+        'background-color': 'white',
+        "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+        "background-fit": "cover cover",
+        "background-image-opacity": 0.5
       });
       
       // hide context menu on click
       showContextMenu.emit(false);
       showRadialMenu.emit(false);
-      
-      
       var node = evt.target;
       current_node.emit(node.data());
    
@@ -320,6 +402,11 @@ export class TreeComponent implements OnChanges {
       // onclick view nodes params
       var pos = cy.$("#" + node.id()).renderedPosition();
       
+      if(cy.$("#" + node.id()).data("question") == "") {
+        self.treeService.sendMessage("open_editor", node.data());
+        self.treeService.sendMessage("radial_menu_toggle_off", "");
+      }
+
       leftClickedCoordinates.emit(pos);
       self.setNode(node.data());
       $("#node_information").empty();
@@ -331,36 +418,9 @@ export class TreeComponent implements OnChanges {
     });
 
     //Process label array
-  
     var nodes = cy.nodes();
     var edges = cy.edges();
-
-    var label_question = 0;
-    var label_answer = 0;
-    var label_LabelQuestion = 0;
-    var label_ids = 0;
-    
-    if(typeof label == 'object') {
-
-      for(var index = 0; index < label.length; index ++ ) {
-        if(label[index] == 'Answers') {
-          label_answer = 1;
-        }
-
-        if(label[index] == 'Questions') {
-          label_question = 1;
-        }
-
-        if(label[index] == 'Ids') {
-          label_ids = 1;
-        }
-
-        if(label[index] == 'Question Labels') {
-          label_LabelQuestion = 1;
-        }
-      }
-    }
-
+  
     for(var i = 0; i < edges.size(); i ++ ) {
       edges[i].data("answer", edges[i].target()[0].data().answer);
       edges[i].style("label", edges[i].data().answer);
@@ -376,6 +436,8 @@ export class TreeComponent implements OnChanges {
 
     // click outside of the tree
     cy.on('tap', function(event) {
+      
+      self.treeService.sendMessage("radial_menu_toggle_off", "");
 
         // target holds a reference to the originator
         // of the event (core or element)
@@ -384,27 +446,43 @@ export class TreeComponent implements OnChanges {
     
         // return to the normal state of the node
         if( evtTarget === cy ) {
-            cy.$("node").style({
-                      'background-color': '#4db8ff',
-                      'width': 90,
-                      'height': 90,
-                      'border-width': 4
-                    });
-            
-            cy.nodes('[question=""]').style({
-              'background-color': '#f1f1f1'
-            });
+          self.selected_edges = [];
 
-            showContextMenu.emit(false);
-            showRadialMenu.emit(false);
+          cy.$("node").style({
+                    'background-color': '#4db8ff',
+                    'width': 90,
+                    'height': 90,
+                    'border-width': 4
+                  });
+  
+          cy.$("edge").style({
+              'width': 3,
+              'line-color': 'gray'
+          })
+  
+          cy.nodes('[question=""]').style({
+            'border-color': 'white',
+            'background-color': 'white',
+            "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+            "background-fit": "cover cover",
+            "background-image-opacity": 0.5
+          });
+  
+          showContextMenu.emit(false);
+          showRadialMenu.emit(false);
+          self.treeService.sendMessage("hide_add_information_button", "");
         } else {
           console.log(evtTarget);
         }
       });
 
-    cy.nodes('[question=""]').style({
-      'background-color': '#f1f1f1'
-    })
+      cy.nodes('[question=""]').style({
+        'border-color': 'white',
+        'background-color': 'white',
+        "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+        "background-fit": "cover cover",
+        "background-image-opacity": 0.5
+      });
 
     // right click
     cy.on('cxttap', 'node', function(event) {
@@ -417,11 +495,14 @@ export class TreeComponent implements OnChanges {
       })
 
       cy.nodes('[question=""]').style({
-        'background-color': '#f1f1f1'
-      })
+        'border-color': 'white',
+        'background-color': 'white',
+        "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+        "background-fit": "cover cover",
+        "background-image-opacity": 0.5
+      });
 
       var node = event.target;
-      //current_node.emit(node.data());
 
       if( node === cy ) {
         
@@ -447,18 +528,11 @@ export class TreeComponent implements OnChanges {
 
       var edgesFromJerry = cy.edges('edge[source="' + node.id() + '"]');
       var jerryChildren = edgesFromJerry.targets();
-      
-      //jerryChildren.css('background-color', 'blue');
-
       var children = [];
 
       for (var i = 0; i < jerryChildren.length; i ++) { 
         children.push(jerryChildren[i].data())
       }
-      
-//      clicked_node_children.emit(children);   
-//      rightClickedCoordinates.emit(pos);
-
     });
   }
 }

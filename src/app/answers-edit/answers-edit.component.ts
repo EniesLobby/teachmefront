@@ -1,58 +1,132 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TreeService } from '../tree/tree.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { QuillEditorComponent } from 'ngx-quill';
-
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 import Quill from 'quill';
+import { NgOnChangesFeature } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-answers-edit',
   templateUrl: './answers-edit.component.html',
   styleUrls: ['./answers-edit.component.css']
 })
-export class AnswersEditComponent implements OnInit {
+export class AnswersEditComponent implements OnInit, OnChanges {
 
   answersForm: FormGroup;
 
   @Input() name;
   @Input() node: any;
-  @Input() children: any;
+  children: any;
 
   current_nodeId: any;
   showTextEditor: boolean = false;
   showDeleteButton: boolean = false;
   showHelper: boolean = true;
+  showStartAdd: boolean = true;
+  deletionAllowed: boolean = true;
+  showDeletionAlert: boolean = false;
+  
+  indexForDelete: any;
+
+  x: 500;
+  y: 500;
+
+  subscription: Subscription;
+
+  arrayOfId = [];
 
   constructor(public activeModal: NgbActiveModal, private treeService: TreeService, private formBuilder: FormBuilder) {
     this.createForm();
+    this.subscription = this.treeService.getMessage().subscribe(message => {
+      if(message != undefined) {
+        if(message.text == 'submit_answers') {
+          this.submitForm();
+        }
+      }
+    });
+  }
+
+  public ngOnChanges(changes: SimpleChanges): any { }
+
+  public deletionAlert(index) {
+    this.showDeletionAlert = true;
+    this.indexForDelete = index;
+  }
+
+  public closeAlert() {
+    this.showDeletionAlert = false;
   }
 
   public deleteAnswer() {
-    console.log("delete current_nodeId", this.current_nodeId);
+    let index = this.indexForDelete;
+    console.log(index);
+
+    if(this.deletionAllowed) {
+      this.treeService.deleteNode(this.arrayOfId[index]).subscribe(
+        val => {
+            console.log("DELETE call successful value returned in body", val);
+            this.sendMessage();
+        },
+        response => {
+            console.log("DELETE call in error", response);
+        },
+        () => {
+            console.log("DELETE PUT observable is now completed.");
+        });
+  
+        this.arrayOfId.splice(index, 1);
+        const control = <FormArray>this.answersForm.controls['aliases'];
+        control.removeAt(index);
+    }
+    
+    this.closeAlert();
   }
 
   private createForm() {
     this.answersForm = this.formBuilder.group({
       textArea: "",
-      answers: "", 
-      exampleRadios: "",
-      exampleSelect: ""
+      answers: "",
+      aliases: this.formBuilder.array([])
     });
   }
 
+  get aliases() {
+    return this.answersForm.get('aliases') as FormArray;
+  }
+
+  addAlias(value: any, nodeId: any) {
+    this.aliases.push(this.formBuilder.control(value));
+    this.addNewAnswer();
+  }
+
   ngOnInit() {
+    this.getChildren();
     this.answersForm = this.formBuilder.group({
         textArea: this.node.question,
-        answers: "", 
-        exampleRadios: "",
-        exampleSelect: ""
+        answers: "",
+        aliases: this.formBuilder.array([])
+      });
+  }
+
+  async getChildren() {
+    let d = [];
+    if(this.node.id != undefined) {
+      await this.treeService.getChildren(this.node.id).toPromise().then( data => {
+        this.children = JSON.parse(data);
+        if(this.children.length != 0) {
+          this.showStartAdd = false;
+        }
       });
 
-    console.log(this.children);
-    console.log(this.node)
+      for(let i = 0; i < this.children.length; i ++ ) {
+        this.aliases.push(this.formBuilder.control(this.children[i].answer));
+        this.arrayOfId.push(this.children[i].nodeId);
+      }
+    }
   }
 
   sendMessage(): void {
@@ -64,51 +138,25 @@ export class AnswersEditComponent implements OnInit {
     this.activeModal.close(this.answersForm.value);
   }
 
-  onChange($event) {
-    this.showTextEditor = true;
+  onChange(index) {
+    let rebuild = this.answersForm.value.aliases[index].replace("\"", "\\\"");
+    console.log("rebuild", rebuild);
+    this.refreshChild(this.arrayOfId[index], rebuild);
+  }
 
-    if($event != undefined) {
-      this.showDeleteButton = true;
-    } else {
-      this.showDeleteButton = false;
-    }
-
-    console.log($event)
-
-    if($event == undefined) {
-      $event = this.current_nodeId;
-    }
-
-    if(typeof($event) == 'number' || typeof($event) == 'string' ) {
-      this.current_nodeId = null;
-      console.log("onchange id = " + $event)
-      console.log(this.children)
-
-      let answer;
-      for(let i = 0; i < this.children.length; i ++ ) {
-        if( this.children[i].id == $event ) {
-          answer = this.children[i].answerHtml
-        }
+  refreshChild(current_nodeId: number, html) {
+    for(let i = 0; i < this.children.length; i ++ ) {
+      if( this.children[i].nodeId == current_nodeId) {
+        this.children[i].answer = html.replace(/<[^>]*>/g, '');;
+        this.children[i].answerHtml = html;
       }
-
-      console.log("answer = " + answer);
-
-      this.answersForm.patchValue({
-        textArea: answer
-      })
-
-      this.current_nodeId = $event;
-    } else if($event != undefined) {
-      this.refreshChild(this.current_nodeId, $event)
     }
   }
 
   submitForm() {
-    
     this.node.question = this.answersForm.value.textArea;
-    
     for(let i = 0; i < this.children.length; i ++ ) {
-      this.treeService.EditNode(this.children[i]).subscribe(
+      this.treeService.EditNode(this.children[i], "nodeId").subscribe(
         val => {
             console.log("PUT call successful value returned in body", val);
             this.sendMessage();
@@ -118,61 +166,43 @@ export class AnswersEditComponent implements OnInit {
         },
         () => {
             console.log("The PUT observable is now completed.");
-        }
-    );;
+        });
     }
 
     this.activeModal.close(this.answersForm.value);
     this.sendMessage();
   }
 
-  refreshChild(current_nodeId: number, $event) {
-    for(let i = 0; i < this.children.length; i ++ ) {
-      if( this.children[i].id == current_nodeId) {
-        this.children[i].answer = $event.text;
-        this.children[i].answerHtml = $event.html;
-      }
-    }
-  }
-  
   addNewAnswer() {
-    
+
     this.showTextEditor = true;
 
     let new_node = {
       question: "",
       questionHtml: "",
       questionLabel: "",
-      answer: "New Answer",
-      answerHtml: "<p>New Answer</p>",
+      answer: "",
+      answerHtml: "",
       information: "",
       rootId: this.node.rootId
     }
 
     let id;
     this.treeService.AddNode(new_node, this.node.id).then(res => {
-      console.log("res = " + res);
       this.children.push({
         id: String(res),
         question: "",
         questionHtml: "",
         questionLabel: "",
-        answer: "New Answer",
-        answerHtml: "<p>New Answer</p>",
+        answer: "",
+        answerHtml: "",
         information: "",
         rootId: this.node.rootId
       });
+
       this.current_nodeId = res;
-      this.answersForm.patchValue({
-          answers: String(res),
-          textArea: "<p>New Answer</p>"
-        });
       this.sendMessage();
+      this.arrayOfId.push(String(res));
     });
-
-    console.log(this.children);
   }
-
-  
-
 }

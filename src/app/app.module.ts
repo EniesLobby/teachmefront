@@ -18,6 +18,8 @@ import { AnswersEditComponent } from './answers-edit/answers-edit.component';
 import { InformationEditComponent } from './information-edit/information-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HelperComponent } from './helper/helper.component';
+import { TooltipComponent } from './tooltip/tooltip.component';
+import { AddInformationComponent } from './add-information/add-information.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { HelperComponent } from './helper/helper.component';
     QuestionEditComponent,
     AnswersEditComponent,
     InformationEditComponent,
-    HelperComponent
+    HelperComponent,
+    TooltipComponent,
+    AddInformationComponent
   ],
   imports: [
     BrowserModule,

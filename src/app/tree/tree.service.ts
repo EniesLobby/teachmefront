@@ -35,13 +35,17 @@ export class TreeService {
         return this.http.get(this.Url + 'getTreeCT?id=' + nodeId, {responseType: 'text'});
     }
 
-    EditNode(node: any) {
+    EditNode(node: any, nodeId: any) {
         
-        return this.http.put(this.Url + "node/" + node.id, node, httpOptions);
+        if(nodeId == null) {
+            return this.http.put(this.Url + "node/" + node.id, node, httpOptions);
+        } else {
+            return this.http.put(this.Url + "node/" + node.nodeId, node, httpOptions);
+        }
     }
 
     deleteNode(nodeId: any) {
-        return this.http.delete(this.Url + "deleteNode/" + nodeId, httpOptions).subscribe();
+        return this.http.delete(this.Url + "deleteNode/" + nodeId, httpOptions);
     }
 
     deleteAnswer(nodeId: any, answer_id: any) {

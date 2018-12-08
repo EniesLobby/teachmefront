@@ -1,17 +1,34 @@
+<h4>List of answers</h4>
+<hr />
+<div class="col">
+  <div class="container">
+    <form [formGroup]="answersForm">
+      <button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)='addAlias()' *ngIf="showStartAdd">Add answer</button><br /><br />
+      <div formArrayName="aliases">
+        <div *ngFor="let child of aliases.controls; let i=index" class="row">
+            <div class="col">
+              <!-- The repeated alias template -->
+              <label>
+                <quill-editor 
+                  [style]="{height: '70px'}" 
+                  [formControlName]="i"  
+                  (onContentChanged)="onChange(i);">
+                </quill-editor>
+              </label>
+            </div>
 
-<form [formGroup]="answersForm" (ngSubmit)="submitForm()">
-  <div class="form-group">
-      <label for="exampleFormControlSelect2">Select Answer to edit</label>
-      <select class="form-control" id="answer_choose" formControlName="answers" (ngModelChange)="onChange($event);" name="sel2">  
-        <option *ngFor="let item of children" [value]="item.id">{{ item.answer }}</option>
-      </select>
+            <div class="col">
+                <button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)='addAlias()'>+</button>
+                <button style="cursor: pointer" class="btn btn-lg btn-outline-danger" (click)='deletionAlert(i)'>-</button>
+            </div>
+        </div>
+      </div>
+      <div id="deletion-alert" *ngIf="showDeletionAlert" [ngStyle]="{'left.px': x, 'top.px': y}">
+          This will delete information and subtree respectively. Are you sure? <br />
+          <button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)='deleteAnswer()'>YES</button>
+          <button style="cursor: pointer" class="btn btn-lg btn-outline-danger" (click)='closeAlert()'>CANCEL</button>
+        </div>
+    </form>
   </div>
-  <div>
-    <button type="button" class="btn btn-primary btn-sm" (click)='addNewAnswer()'>Add Answer</button>
-    <button type="button" class="btn btn-danger btn-sm" *ngIf='showDeleteButton' (click)='deleteAnswer()'>Delete Answer</button>
-  </div>
-
-    <div class="form-group">
-        <quill-editor *ngIf="showTextEditor" [style]="{height: '250px'}" formControlName="textArea" (onContentChanged)="onChange($event);"></quill-editor>
-    </div>
-</form>
+</div>
+<hr />

@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TreeService } from '../tree/tree.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import Quill from 'quill';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-question-edit',
@@ -18,11 +19,24 @@ export class QuestionEditComponent implements OnInit {
   questionHtml: any;
   question: any;
 
+  information: any;
+  generalInformation: any;
+
+  children: any;
+  subscription: Subscription;
+
   label_helper: string = "";
   question_edit: string = "";
 
   constructor(public activeModal: NgbActiveModal, private treeService: TreeService, private formBuilder: FormBuilder) {
     this.createForm();
+    this.subscription = this.treeService.getMessage().subscribe(message => {
+      if(message != undefined) {
+        if(message.text == 'submit_answers') {
+          this.updateQuestion();
+        }
+      }
+    });
   }
 
 
@@ -30,29 +44,67 @@ export class QuestionEditComponent implements OnInit {
     this.questionEditForm = this.formBuilder.group(
       {
         textArea: "",
-        questionLabel: ""
+        questionLabel: "",
+        questionGeneralInformation: ""
       });
   }
 
   ngOnInit() {
+
     this.questionEditForm = this.formBuilder.group(
       {
         textArea: this.node.question,
-        questionLabel: this.node.questionLabel
+        questionLabel: this.node.questionLabel,
+        questionGeneralInformation: ""
       }); 
 
+    this.treeService.getInformation(this.node.id).toPromise().then( data => {
+      this.information = data;
+
+      if(this.information != undefined) {
+        for(var i = 0; i < this.information.length; i ++ ) {
+          if(this.information[i].idOfNodes == String(this.node.id)) {
+            this.generalInformation = this.information[i].information;
+            this.questionEditForm.patchValue({
+              questionGeneralInformation: this.information[i].information
+            })
+          }
+        }
+      }
+      console.log("this.information", this.generalInformation);
+    });
+
+    this.setTreeData();
+
     this.onLabelChanges();
+  }
+
+  public setTreeData() {
+    
+    let d = [];
+    if(this.node.id != undefined) {
+      this.treeService.getChildren(this.node.id).toPromise().then( data => {
+        this.children = JSON.parse(data);
+      });
+    }
   }
 
   updateTree(): void {
     this.treeService.sendMessage('refresh', null);
   }
 
-  onChange($event) {
+  onChangeQuestion($event) {
     this.questionHtml = $event.html;
     this.question = $event.text;
+  }
 
-    this.updateQuestion();
+  onChangeGeneralInformation($event) {
+    this.generalInformation = $event.html;
+    this.updateGeneralQuestion();
+  }
+
+  async updateGeneralQuestion() {
+    await this.treeService.updateInformation( this.node.id, String(this.node.id), "", this.generalInformation);
   }
 
   updateQuestion() {
@@ -72,10 +124,7 @@ export class QuestionEditComponent implements OnInit {
     this.node.questionHtml = this.questionHtml;
     this.node.questionLabel = this.questionEditForm.value.questionLabel;
 
-    console.log("node", this.node);
-    console.log("AEAEAEAEAE", this.questionEditForm.value.questionLabel);
-
-    this.treeService.EditNode(this.node).subscribe(
+    this.treeService.EditNode(this.node, null).subscribe(
       val => {
           console.log("POST call successful value returned in body", val);
           this.updateTree();
@@ -90,10 +139,6 @@ export class QuestionEditComponent implements OnInit {
   }
 
   onLabelChanges(): void {
-    this.questionEditForm.valueChanges.subscribe(val => {
-      console.log(val);
-      this.updateQuestion();
-    });
   }
 
 

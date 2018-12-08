@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TreeService } from '../tree/tree.service';
-
-declare var wheelnav: any;
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-radial-menu',
@@ -11,18 +10,48 @@ declare var wheelnav: any;
 export class RadialMenuComponent implements OnInit, OnChanges {
       
   @Input() leftClickedCoordinates;
-  
+  @Input() current_node: any;
+
+  showRadialMenu: boolean = false;
+  subscription: Subscription;
+  toggleSwitcher: boolean = false;
+
   x: any;
   y: any;
 
   constructor(private treeService: TreeService) {
+    this.subscription = this.treeService.getMessage().subscribe(message => {
+      if(message != undefined) {
+          if(message.text == 'radial_menu_toggle_off') {
+            this.showRadialMenu = false;
+          }  
+      }
+    });
   }
   
   ngOnInit() {
+
+  }
+
+  openEditor() {
+    this.treeService.sendMessage("open_editor", this.current_node);
+  }
+
+  public toggle() {
+    this.treeService.clearMessage();
+    this.toggleSwitcher = !this.toggleSwitcher;
+    if(this.toggleSwitcher) {
+      this.treeService.sendMessage("toggle_on", this.current_node);
+    } else {
+      this.treeService.sendMessage("toggle_off", this.current_node);
+    }
+  }
+
+  about() {
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
     $("#nodeContextMenu").on("contextmenu", function(e) {
       return false;
     });
@@ -30,12 +59,9 @@ export class RadialMenuComponent implements OnInit, OnChanges {
     if( this.leftClickedCoordinates != undefined ) {
       this.x = this.leftClickedCoordinates.x;
       this.y = this.leftClickedCoordinates.y;
+      this.showRadialMenu = true;
+    } else {
+      this.showRadialMenu = false;
     }
   }
-
-  toggleClick() {
-    this.treeService.sendMessage("toggle", "Ae");
-  }
-
-
 }
