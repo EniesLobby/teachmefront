@@ -38,13 +38,14 @@ export class RadialMenuComponent implements OnInit, OnChanges {
   }
 
   public toggle() {
-    this.treeService.clearMessage();
-    this.toggleSwitcher = !this.toggleSwitcher;
     if(this.toggleSwitcher) {
+
       this.treeService.sendMessage("toggle_on", this.current_node);
     } else {
+
       this.treeService.sendMessage("toggle_off", this.current_node);
     }
+    this.toggleSwitcher = !this.toggleSwitcher;
   }
 
   about() {

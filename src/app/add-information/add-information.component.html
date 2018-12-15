@@ -11,7 +11,7 @@
 
       <form [formGroup]="informationEditForm" (ngSubmit)="submitForm()">
         <div class="form-group">
-          <label for="information">Information</label>
+          <!--<label for="information">Information</label>-->
           <quill-editor [style]="{height: '300px'}" id="information" formControlName="textArea" (onContentChanged)="onInformationChange($event);"></quill-editor>
         </div>
       </form>

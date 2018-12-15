@@ -1,13 +1,9 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TreeService } from '../tree/tree.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { QuillEditorComponent } from 'ngx-quill';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
-
 import Quill from 'quill';
-import { NgOnChangesFeature } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-answers-edit',
@@ -20,8 +16,8 @@ export class AnswersEditComponent implements OnInit, OnChanges {
 
   @Input() name;
   @Input() node: any;
-  children: any;
 
+  children: any;
   current_nodeId: any;
   showTextEditor: boolean = false;
   showDeleteButton: boolean = false;
@@ -29,17 +25,23 @@ export class AnswersEditComponent implements OnInit, OnChanges {
   showStartAdd: boolean = true;
   deletionAllowed: boolean = true;
   showDeletionAlert: boolean = false;
-  
   indexForDelete: any;
-
   x: 500;
   y: 500;
-
   subscription: Subscription;
-
   arrayOfId = [];
 
-  constructor(public activeModal: NgbActiveModal, private treeService: TreeService, private formBuilder: FormBuilder) {
+  public editorOptions_hidden = {
+    toolbar: '.toolbar',
+  };
+  
+  public editorOptions = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike']
+    ]
+  };
+
+  constructor(private treeService: TreeService, private formBuilder: FormBuilder) {
     this.createForm();
     this.subscription = this.treeService.getMessage().subscribe(message => {
       if(message != undefined) {
@@ -66,6 +68,7 @@ export class AnswersEditComponent implements OnInit, OnChanges {
     console.log(index);
 
     if(this.deletionAllowed) {
+      console.log("this.arrayOfId[index]", this.arrayOfId[index]);
       this.treeService.deleteNode(this.arrayOfId[index]).subscribe(
         val => {
             console.log("DELETE call successful value returned in body", val);
@@ -121,7 +124,7 @@ export class AnswersEditComponent implements OnInit, OnChanges {
           this.showStartAdd = false;
         }
       });
-
+      console.log("this.children[i]", this.children);
       for(let i = 0; i < this.children.length; i ++ ) {
         this.aliases.push(this.formBuilder.control(this.children[i].answer));
         this.arrayOfId.push(this.children[i].nodeId);
@@ -133,10 +136,6 @@ export class AnswersEditComponent implements OnInit, OnChanges {
     this.treeService.sendMessage('refresh', null);
   }
 
-  close() {
-    this.sendMessage();
-    this.activeModal.close(this.answersForm.value);
-  }
 
   onChange(index) {
     let rebuild = this.answersForm.value.aliases[index].replace("\"", "\\\"");
@@ -168,8 +167,7 @@ export class AnswersEditComponent implements OnInit, OnChanges {
             console.log("The PUT observable is now completed.");
         });
     }
-
-    this.activeModal.close(this.answersForm.value);
+    
     this.sendMessage();
   }
 
@@ -190,7 +188,7 @@ export class AnswersEditComponent implements OnInit, OnChanges {
     let id;
     this.treeService.AddNode(new_node, this.node.id).then(res => {
       this.children.push({
-        id: String(res),
+        nodeId: String(res),
         question: "",
         questionHtml: "",
         questionLabel: "",

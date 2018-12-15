@@ -2,7 +2,7 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 
 .huge-modal .modal-dialog {
-    max-width: 1200px;
+    max-width: 80%;
   }
 
 .contextmenu {
@@ -10,7 +10,7 @@
 }
 
 #container {
-    width: 600px;
+    width: 80%;
     margin: 0 auto;
   }
   .drop-shadow {

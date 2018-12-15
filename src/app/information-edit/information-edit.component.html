@@ -1,25 +1,16 @@
 <div class="modal-header">
-  <h4 class="modal-title">Edit Question</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
+  <h4 class="modal-title">Edit Node</h4>
 </div>
 <form [formGroup]="myForm" (ngSubmit)="submitForm()">
   <div class="modal-body">
-      <div class="container">
+      <div class="container-fluid">
           <div class="row">
             <div class="col">
               <app-question-edit [node]="node"></app-question-edit>
             </div>
-          </div>
-          <div class="row">
-                <app-answers-edit [node]="node"></app-answers-edit>
-          </div>
-          <div class="row">
-              <div class="col">
-              </div>
-              <div class="col">
-              </div>
+            <div class="col">
+              <app-answers-edit [node]="node"></app-answers-edit>
+            </div>
           </div>
         </div>
     </div>

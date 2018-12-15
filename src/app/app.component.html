@@ -1,24 +1,3 @@
-<app-tree 
-    (rightClickedCoordinates)='performRightClick($event)' 
-    (showContextMenu)='hideContextMenu($event)'
-    
-    (leftClickedCoordinates)='performLeftClick($event)' 
-    (showRadialMenu)='hideRadialMenu($event)'
 
-    (current_node)='setCurrentNode($event)'
-    (clicked_node_children)='setClickedNodeChildren($event)'
-    ></app-tree>
-    <app-right-click-menu 
-    [rightClickedCoordinates]="rightClickedCoordinates" 
-    [showContextMenu]="showContextMenu"
-    [current_node]="current_node"
-    [clicked_node_children]="clicked_node_children"
-    ></app-right-click-menu>
-
-    <app-radial-menu 
-    [leftClickedCoordinates]="leftClickedCoordinates"
-    [current_node]="current_node"
-    ></app-radial-menu>
-
-<app-profile></app-profile>
-<app-helper></app-helper>
+    <!--<app-tree></app-tree>-->
+    <router-outlet></router-outlet>

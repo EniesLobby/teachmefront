@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TreeService } from '../tree/tree.service';
+import { UserService } from '../UserService.service';
 
 @Component({
   selector: 'app-profile',
@@ -12,13 +13,20 @@ export class ProfileComponent implements OnInit {
   y = 10;
   
   showProfileIcon = true;
+  showTrees: boolean = false;
+  user: any;
+  rootId_title = [];
 
-  constructor(private treeService: TreeService) { }
+  constructor(private treeService: TreeService,  private userService: UserService) { }
 
   ngOnInit() {
+    this.getUser();
+  }
+
+  public viewTree(rootId) {
+    console.log(rootId);
   }
   
-    /* Set the width of the side navigation to 250px */
   public openNav() {
 
     this.treeService.sendMessage("showHelperProfile", false);
@@ -26,7 +34,6 @@ export class ProfileComponent implements OnInit {
     this.showProfileIcon = false;
   }
   
-  /* Set the width of the side navigation to 0 */
   public closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     this.showProfileIcon = true;
@@ -51,6 +58,37 @@ export class ProfileComponent implements OnInit {
   public deleteAllNodes() {
     this.treeService.deleteAllNodes();
     this.treeService.sendMessage("refresh", null);
+  }
+
+  public async getUser() {
+    await this.treeService.getUser(this.userService.getEmail()).toPromise().then(
+      val => {
+        this.user = JSON.parse(val);
+        this.getInformation();
+      }
+    )
+  }
+
+  public async getInformation() {
+    
+    let current_rootId;
+
+    console.log(this.user);
+    for(var i = 0; i < this.user.treeRootIds.length; i ++ ) {
+      current_rootId = this.user.treeRootIds[i];
+      await this.treeService.getInformationOne(this.user.treeRootIds[i]).toPromise().then(
+        val => {
+          var data = val;
+          this.rootId_title.push({
+            rootId:  current_rootId,
+            title: data
+          })
+          this.showTrees = true;
+        }
+      )
+    }
+
+    console.log(this.rootId_title);
   }
 
 }

@@ -2,8 +2,10 @@
   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
   <div id="container">
       <div class="drop-shadow lifted">
-          <a href="#" (click)="createTree()">Create Tree</a>
-          <a href="#" (click)="deleteAllNodes()">Delete All Nodes</a>
+        <h4>Tree list</h4>
+          <a style="cursor: pointer;" *ngFor="let item of rootId_title" (click)='viewTree(item.rootId)'>{{ item.title.note }}</a>       
+          <a style="cursor: pointer;" (click)="createTree()">Create Tree</a>
+          <a style="cursor: pointer;" (click)="deleteAllNodes()">Delete All Nodes</a>
         <hr />
       </div>
     </div>

@@ -4,7 +4,8 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json',
+                              responseType: 'text' })
 };
 
 @Injectable({ providedIn: 'root' })
@@ -32,7 +33,19 @@ export class TreeService {
     Url = 'http://localhost:8080/nodes/';
     // {responseType: 'text'}
     getTree(nodeId: any) {
-        return this.http.get(this.Url + 'getTreeCT?id=' + nodeId, {responseType: 'text'});
+        return this.http.get(this.Url + 'getTreeCT?id=' + nodeId,  { responseType: 'text' });
+    }
+
+    getUser(email: string) {
+        return this.http.get(this.Url + 'user/' + email, { responseType: 'text' })
+    }
+
+    setTitle(rootId: any, title: any) {
+        let body = {
+            "title": title
+        }
+
+        return this.http.post(this.Url + 'title/' + rootId, body, httpOptions);
     }
 
     EditNode(node: any, nodeId: any) {
@@ -40,6 +53,10 @@ export class TreeService {
         if(nodeId == null) {
             return this.http.put(this.Url + "node/" + node.id, node, httpOptions);
         } else {
+            if(node.nodeId == undefined) {
+                console.log("UDUDUDUDUDUDUDUDU", node);
+                return this.http.put(this.Url + "node/" + node.id, node, httpOptions);
+            }
             return this.http.put(this.Url + "node/" + node.nodeId, node, httpOptions);
         }
     }
@@ -64,16 +81,47 @@ export class TreeService {
         );
     }
 
+    addUser(email: string, name: string, password: string) {
+        let body = {
+            "email": email,
+            "name": name,
+            "password": password
+        }
+
+        return this.http.post(this.Url + "/user/", body, httpOptions);
+    }
+
+    addRoot(email: string, rootId: string) {
+        let body = {
+            "rootId": rootId
+        }
+
+        return this.http.post(this.Url + "/user/addroot/" + email, body, httpOptions)
+    }
+
+    checkUser(email: string, password: string) {
+        let body = {
+            "email": email,
+            "password": password
+        }
+        console.log(body);
+        return this.http.post(this.Url + "user/login", body, httpOptions);
+    }
+
     createTree() {
         return this.http.post(this.Url + "createTree", "", httpOptions);
     }
 
     getChildren(nodeId: any) {
-        return this.http.get(this.Url + 'node/' + nodeId + '/children', {responseType: 'text'});
+        return this.http.get(this.Url + 'node/' + nodeId + '/children', {responseType: 'text' });
     }
 
     getInformation(nodeId: any) {
         return this.http.get(this.Url + 'node/information/' + nodeId + '/');
+    }
+
+    getInformationOne(nodeId: any) {
+        return this.http.get(this.Url + 'node/information_one/' + nodeId + '/');
     }
 
     async updateInformation(nodeId: any, answer_id: any, notes: string, information: string) {
@@ -99,5 +147,5 @@ export class TreeService {
             () => {
                 console.log("The DELETE observable is now completed.");
             });
-        }
+    }
 }

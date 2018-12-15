@@ -28,7 +28,7 @@ export class AddInformationComponent implements OnInit {
   constructor(private modalService: NgbModal, private formBuilder: FormBuilder, public activeModal: NgbActiveModal, private treeService: TreeService) { 
     this.createForm();
     this.subscription = this.treeService.getMessage().subscribe(message => {
-      if(message != undefined) {
+        if(message != undefined) {
         
         if(message.text == 'view_add_information_button') {
           this.showAddInformationButton = true;

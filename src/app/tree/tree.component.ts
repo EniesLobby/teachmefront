@@ -18,17 +18,15 @@ export class TreeComponent implements OnChanges {
   @Input() public appr: any;
   @Input() public options: any;
   @Input() public tree_data: any;
-
   @Input() public elements: any;
   @Input() public style: any;
   @Input() public layout: any;
   @Input() public zoom: any;
   @Input() public label_to_show = "id";
-
-  current_rootId: any = 287;
-  selected_edges = [];
-
   @Input() refreshTree;
+
+  current_rootId: any = 398;
+  selected_edges = [];
 
   public local_data: any;
   public node_visibility: boolean = false;
@@ -37,13 +35,11 @@ export class TreeComponent implements OnChanges {
 
   @Output() rightClickedCoordinates = new EventEmitter();
   @Output() showContextMenu = new EventEmitter();
-  @Output() leftClickedCoordinates = new EventEmitter();
   @Output() showRadialMenu = new EventEmitter();
-  @Output() current_node = new EventEmitter();
-  @Output() clicked_node_children = new EventEmitter();
-
+  clicked_node_children: any;
+  leftClickedCoordinates: any;
+  current_node: any;
   node_for_right_menu;
-
   message: any;
   subscription: Subscription;
 
@@ -94,7 +90,6 @@ export class TreeComponent implements OnChanges {
     
     this.options = this.options || {
       name: 'breadthfirst',
-      
       fit: false, // whether to fit the viewport to the graph
       directed: true, // whether the tree is directed downwards (or edges can point in any direction if false)
       padding: 30, // padding on fit
@@ -191,6 +186,10 @@ export class TreeComponent implements OnChanges {
       style: this.appr
     });
 
+    cy.edges().style({
+      'width': 7
+    });
+
     cy.layout( this.options ).run();
     cy.userZoomingEnabled( false );
     cy.fit();
@@ -206,7 +205,6 @@ export class TreeComponent implements OnChanges {
     if(rootId != undefined ) {
       var options = {
         name: 'breadthfirst',
-        
         fit: false, // whether to fit the viewport to the graph
         directed: true, // whether the tree is directed downwards (or edges can point in any direction if false)
         padding: 30, // padding on fit
@@ -276,6 +274,7 @@ export class TreeComponent implements OnChanges {
       }
     });
 
+
     // click on the edge [***INFORMATION MECHANISM*********]
     cy.on('tap', 'edge', function(evt) {
 
@@ -338,7 +337,7 @@ export class TreeComponent implements OnChanges {
       cy.nodes('[question=""]').style({
         'border-color': 'white',
         'background-color': 'white',
-        "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+        "background-image": [ "https://cdn1.iconfinder.com/data/icons/essentials-pack/96/add_create_new_plus_positive-512.png" ],
         "background-fit": "cover cover",
         "background-image-opacity": 0.5
       });
@@ -347,8 +346,6 @@ export class TreeComponent implements OnChanges {
     // hover edge
     cy.on('mouseout', 'edge', function(evt) {
       var edge = evt.target;
-
-
     })
 
     // set i sign on informated edge
@@ -370,7 +367,7 @@ export class TreeComponent implements OnChanges {
       cy.nodes('[question=""]').style({
         'border-color': 'white',
         'background-color': 'white',
-        "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+        "background-image": [ "https://cdn1.iconfinder.com/data/icons/essentials-pack/96/add_create_new_plus_positive-512.png" ],
         "background-fit": "cover cover",
         "background-image-opacity": 0.5
       });
@@ -379,7 +376,7 @@ export class TreeComponent implements OnChanges {
       showContextMenu.emit(false);
       showRadialMenu.emit(false);
       var node = evt.target;
-      current_node.emit(node.data());
+      self.current_node = node.data();
    
       var pos = cy.$("#" + node.id()).renderedPosition();
       var edgesFromJerry = cy.edges('edge[source="' + node.id() + '"]');
@@ -390,7 +387,7 @@ export class TreeComponent implements OnChanges {
         children.push(jerryChildren[i].data())
       }
       
-      clicked_node_children.emit(children);   
+      self.clicked_node_children = children;   
       rightClickedCoordinates.emit(pos);
       
       // change background color when clicked
@@ -402,12 +399,14 @@ export class TreeComponent implements OnChanges {
       // onclick view nodes params
       var pos = cy.$("#" + node.id()).renderedPosition();
       
+      console.log("node.data()", node.data());
+
       if(cy.$("#" + node.id()).data("question") == "") {
         self.treeService.sendMessage("open_editor", node.data());
         self.treeService.sendMessage("radial_menu_toggle_off", "");
       }
 
-      leftClickedCoordinates.emit(pos);
+      self.leftClickedCoordinates = pos;
       self.setNode(node.data());
       $("#node_information").empty();
 
@@ -432,7 +431,6 @@ export class TreeComponent implements OnChanges {
       //local_label = local_label + " #" + nodes[i].data().id;
       nodes[i].style("label", local_label);
     }
-    
 
     // click outside of the tree
     cy.on('tap', function(event) {
@@ -456,14 +454,14 @@ export class TreeComponent implements OnChanges {
                   });
   
           cy.$("edge").style({
-              'width': 3,
+              'width': 7,
               'line-color': 'gray'
           })
   
           cy.nodes('[question=""]').style({
             'border-color': 'white',
             'background-color': 'white',
-            "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+            "background-image": [ "https://cdn1.iconfinder.com/data/icons/essentials-pack/96/add_create_new_plus_positive-512.png" ],
             "background-fit": "cover cover",
             "background-image-opacity": 0.5
           });
@@ -479,7 +477,7 @@ export class TreeComponent implements OnChanges {
       cy.nodes('[question=""]').style({
         'border-color': 'white',
         'background-color': 'white',
-        "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+        "background-image": [ "https://cdn1.iconfinder.com/data/icons/essentials-pack/96/add_create_new_plus_positive-512.png" ],
         "background-fit": "cover cover",
         "background-image-opacity": 0.5
       });
@@ -497,7 +495,7 @@ export class TreeComponent implements OnChanges {
       cy.nodes('[question=""]').style({
         'border-color': 'white',
         'background-color': 'white',
-        "background-image": [ "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Antu_insert-image.svg/200px-Antu_insert-image.svg.png" ],
+        "background-image": [ "https://cdn1.iconfinder.com/data/icons/essentials-pack/96/add_create_new_plus_positive-512.png" ],
         "background-fit": "cover cover",
         "background-image-opacity": 0.5
       });

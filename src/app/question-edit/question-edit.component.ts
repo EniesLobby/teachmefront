@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TreeService } from '../tree/tree.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import Quill from 'quill';
@@ -28,7 +27,7 @@ export class QuestionEditComponent implements OnInit {
   label_helper: string = "";
   question_edit: string = "";
 
-  constructor(public activeModal: NgbActiveModal, private treeService: TreeService, private formBuilder: FormBuilder) {
+  constructor(private treeService: TreeService, private formBuilder: FormBuilder) {
     this.createForm();
     this.subscription = this.treeService.getMessage().subscribe(message => {
       if(message != undefined) {
@@ -116,6 +115,31 @@ export class QuestionEditComponent implements OnInit {
     if( this.questionHtml == undefined) {
       this.questionHtml = this.node.questionHtml;
     }
+
+    // preserve newlines, etc - use valid JSON
+    this.question = this.question.replace(/\\n/g, "\\n")  
+    .replace(/\\'/g, "\\'")
+    .replace(/\\"/g, '\\"')
+    .replace(/\\&/g, "\\&")
+    .replace(/\\r/g, "\\r")
+    .replace(/\\t/g, "")
+    .replace(/\\b/g, "")
+    .replace(/\\f/g, "");
+    // remove non-printable and other non-valid JSON chars
+    this.question = this.question.replace(/[\u0000-\u0019]+/g,"");
+
+    // preserve newlines, etc - use valid JSON
+    this.questionHtml = this.questionHtml.replace(/\\n/g, "\\n")  
+    .replace(/\\'/g, "\\'")
+    .replace(/\\"/g, '\\"')
+    .replace(/\\&/g, "\\&")
+    .replace(/\\r/g, "\\r")
+    .replace(/\\t/g, "")
+    .replace(/\\b/g, "")
+    .replace(/\\f/g, "");
+    
+    // remove non-printable and other non-valid JSON chars
+    this.question = this.question.replace(/[\u0000-\u0019]+/g,"");
     
     this.question = this.question.replace(/(\r\n\t|\n|\r\t)/gm,"");
     this.questionHtml = this.questionHtml.replace(/(\r\n\t|\n|\r\t)/gm,"");

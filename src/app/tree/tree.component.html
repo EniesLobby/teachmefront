@@ -2,6 +2,21 @@
 
 <app-tooltip></app-tooltip>
 <app-add-information></app-add-information>
+<app-profile></app-profile>
+<app-helper></app-helper>
+<app-right-click-menu 
+    [rightClickedCoordinates]="rightClickedCoordinates" 
+    [showContextMenu]="showContextMenu"
+    [current_node]="current_node"
+    [clicked_node_children]="clicked_node_children"
+></app-right-click-menu>
+<app-radial-menu 
+    [leftClickedCoordinates]="leftClickedCoordinates"
+    [current_node]="current_node"
+></app-radial-menu>
+
+<div id="information_present"></div>
+
 <!--
     <app-supporter [node_for_right_menu]="node_for_right_menu"></app-supporter>
 -->

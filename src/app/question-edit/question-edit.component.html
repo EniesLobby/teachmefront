@@ -1,12 +1,25 @@
 <form [formGroup]="questionEditForm" (ngSubmit)="submitForm()">
   <div class="form-group">
     <label for="question">Question</label>
-    <quill-editor [style]="{height: '100px'}" id="question" formControlName="textArea" (onContentChanged)="onChangeQuestion($event);"></quill-editor>
-    <hr />
-    <label for="question_label">Tag</label>
-    <input type="email" class="form-control" id="question_label" placeholder="" formControlName="questionLabel">
-    <br />
+    <quill-editor
+      [style]="{height: '100px'}" 
+      id="inp" 
+      formControlName="textArea" 
+      (onContentChanged)="onChangeQuestion($event);"
+      ></quill-editor>
     <label for="questionGeneralInformation">General information about question</label>
-    <quill-editor [style]="{height: '200px'}" id="questionGeneralInformation" formControlName="questionGeneralInformation" (onContentChanged)="onChangeGeneralInformation($event);"></quill-editor>
-  </div>
+    <quill-editor 
+      [style]="{height: '600px'}" 
+      id="questionGeneralInformation" 
+      formControlName="questionGeneralInformation" 
+      (onContentChanged)="onChangeGeneralInformation($event);"
+      ></quill-editor>
+      
+      <label for="inp" class="inp">
+        <input type="text" id="inp" placeholder="&nbsp;">
+        <span class="label">Label</span>
+        <span class="border"></span>
+      </label>
+  
+    </div>
 </form>

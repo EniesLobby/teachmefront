@@ -1,5 +1,5 @@
 import { Renderer, Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TreeService } from '../tree/tree.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { QuillEditorComponent } from 'ngx-quill';
@@ -20,38 +20,33 @@ export class InformationEditComponent implements OnInit {
 
   myForm: FormGroup;
   checkForm: FormGroup;
-
   @Input() name;
   @Input() node: any;
-
   questionHtml: any;
   question: any;
-
   children: any;
   treeData: any;
-
   clickedId: any;
   selectedNodes = [];
-
   showMessage: true;
   information: any; // Array of all information
-
   currentClickedId: string = "";
   showTextEditor: boolean = false;
-
   showQuestionClickedMessage: boolean = false;
   subscription: Subscription;
-
   answerstoShow = [];
   labelsToShow = [];
 
-  constructor(private renderer : Renderer, public activeModal: NgbActiveModal, private treeService: TreeService, private formBuilder: FormBuilder) {
+  constructor(config: NgbModalConfig, private renderer : Renderer, public activeModal: NgbActiveModal, 
+              private treeService: TreeService, private formBuilder: FormBuilder) {
+    
     this.createForm();
-
     this.subscription = this.treeService.getMessage().subscribe(message => {
       if(message != undefined) {
       }
     });
+    config.keyboard = false;
+    config.backdrop = 'static';
   }
 
   private createForm() {
@@ -143,14 +138,10 @@ export class InformationEditComponent implements OnInit {
       multiId = multiId.substring(0, multiId.length - 1);
     }
     
-    console.log("multiId", multiId);
-
     this.currentClickedId = multiId;
-
     let current_information;
 
     for(let i = 0; i < this.information.length; i ++ ) {
-      //if(this.information[i].idOfNodes == multiId || this.information[i].idOfNodes == this.reverse(multiId)) {
         if(this.equalStringCheck(this.information[i].idOfNodes, multiId)) {
         console.log("checked")
         current_information = this.information[i].information;
@@ -183,11 +174,10 @@ export class InformationEditComponent implements OnInit {
   }
 
   public async submitForm() {
-    this.treeService.sendMessage("submit_answers", "");
     this.treeService.sendMessage("submit_question", "");
+    this.treeService.sendMessage("submit_answers", "");
     this.activeModal.close(this.myForm.value);
   }
-
 
 }
 
