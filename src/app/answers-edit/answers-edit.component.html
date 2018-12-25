@@ -3,15 +3,19 @@
     <form [formGroup]="answersForm">
       <button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)='addAlias()' *ngIf="showStartAdd">Add answer</button><br /><br />
       <div formArrayName="aliases">
-        <div *ngFor="let child of aliases.controls; let i=index" class="row">
+        <div *ngFor="let child of aliases.controls; let i = index" class="row">
             <div class="col">
               <label>
-                <quill-editor
-                  [modules]="editorOptions"
-                  [style]="{ height: '60px', width: '800px' }" 
-                  [formControlName]="i"  
-                  (onContentChanged)="onChange(i);">
-                </quill-editor>
+                <div class="answer_style">
+                  <quill-editor
+                    [placeholder]="'Put your answer here ...'"
+                    [modules]="editorOptions"
+                    [theme]="'bubble'"
+                    [style]="{ height: '60px', width: '800px'}" 
+                    [formControlName]="i"
+                    (onContentChanged)="onChange(i);">
+                  </quill-editor>
+                </div>
               </label>
             </div>
 
@@ -29,4 +33,3 @@
     </form>
   </div>
 </div>
-<hr />

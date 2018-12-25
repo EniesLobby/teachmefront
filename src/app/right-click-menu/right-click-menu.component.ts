@@ -33,7 +33,7 @@ export class RightClickMenuComponent implements OnChanges, OnInit  {
       if(message != undefined) {
           if(message.text == 'open_editor') {
             this.current_node = message.data;
-            this.openEditInformation();
+            //this.openEditInformation();
           }  
       }
     });
@@ -56,7 +56,6 @@ export class RightClickMenuComponent implements OnChanges, OnInit  {
   openEditInformation() {
     const modalRef = this.modalService.open(InformationEditComponent, { windowClass : "huge-modal"});
     modalRef.componentInstance.node = this.current_node;
-    this.appComponent.hideContextMenu(false);
   }
 
 }

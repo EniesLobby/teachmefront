@@ -21,6 +21,8 @@ import { AddInformationComponent } from './add-information/add-information.compo
 import { UserLoginComponent } from './user-login/user-login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { UserServiceComponent } from './user-service/user-service.component';
+import { GeneralInformationEditComponent } from './general-information-edit/general-information-edit.component';
+import { NodeEditorComponent } from './node-editor/node-editor.component';
 
 const appRoutes: Routes = [
     { path: '', component: UserLoginComponent },
@@ -43,7 +45,9 @@ const appRoutes: Routes = [
     TooltipComponent,
     AddInformationComponent,
     UserLoginComponent,
-    UserServiceComponent
+    UserServiceComponent,
+    GeneralInformationEditComponent,
+    NodeEditorComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -61,7 +65,8 @@ const appRoutes: Routes = [
     QuestionEditComponent,
     AnswersEditComponent,
     InformationEditComponent,
-    TreeComponent
+    TreeComponent,
+    NodeEditorComponent
   ],
   providers: [TreeService],
   bootstrap: [AppComponent]

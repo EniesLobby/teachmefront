@@ -22,6 +22,22 @@
     box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.1);
 }
 
+.answerFocused {
+    border-style: solid;
+    border-width: 0px 0px 1px 4px;
+    border-color: rgba(44, 114, 255, 0.651);
+    font-size: 40px;
+    box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+#question_style {
+    width: 700px;
+    border-style: solid;
+    border-width: 0px 0px 2px 0px;
+    border-color: rgba(44, 114, 255, 0.651);
+    font-size: 40px;
+}
+
 #deletion-alert {    
     border-style: solid;
     border-color: red;
@@ -31,4 +47,16 @@
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.4);
     transition: 0.3s;
     height: 150px;
+}
+
+.card-custom {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+}
+
+#giStyle {
+    border-style: solid;
+    border-width: 0px 0px 0px 0px;
+    border-color: rgba(44, 114, 255, 0.651);
+    font-size: 40px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TreeService } from '../tree/tree.service';
 import { Subscription } from 'rxjs';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NodeEditorComponent } from '../node-editor/node-editor.component'
 
 @Component({
   selector: 'app-radial-menu',
@@ -19,12 +21,18 @@ export class RadialMenuComponent implements OnInit, OnChanges {
   x: any;
   y: any;
 
-  constructor(private treeService: TreeService) {
+  constructor(private modalService: NgbModal, private treeService: TreeService) {
     this.subscription = this.treeService.getMessage().subscribe(message => {
       if(message != undefined) {
-          if(message.text == 'radial_menu_toggle_off') {
+          
+        if(message.text == 'radial_menu_toggle_off') {
             this.showRadialMenu = false;
           }  
+
+        if(message.text == 'open_editor') {
+          this.current_node = message.data;
+          this.openNodeEditor();
+        }  
       }
     });
   }
@@ -48,8 +56,13 @@ export class RadialMenuComponent implements OnInit, OnChanges {
     this.toggleSwitcher = !this.toggleSwitcher;
   }
 
-  about() {
+  openNodeEditor() {
+    const modalRef = this.modalService.open(NodeEditorComponent, { windowClass : "huge-modal"});
+    modalRef.componentInstance.node = this.current_node;
+  }
 
+  about() {
+    console.log("ABOUT");
   }
 
   ngOnChanges(changes: SimpleChanges) {

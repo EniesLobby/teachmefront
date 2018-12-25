@@ -1,13 +1,9 @@
 import { Renderer, Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TreeService } from '../tree/tree.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { QuillEditorComponent } from 'ngx-quill';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import Quill from 'quill';
-import * as cytoscape from 'cytoscape';
-import cxtmenu from 'cytoscape-cxtmenu';
-import * as $ from 'jquery';
 import { Subscription } from 'rxjs'; 
 
 
@@ -29,7 +25,7 @@ export class InformationEditComponent implements OnInit {
   clickedId: any;
   selectedNodes = [];
   showMessage: true;
-  information: any; // Array of all information
+  information: any; // Array with all information
   currentClickedId: string = "";
   showTextEditor: boolean = false;
   showQuestionClickedMessage: boolean = false;
@@ -41,10 +37,7 @@ export class InformationEditComponent implements OnInit {
               private treeService: TreeService, private formBuilder: FormBuilder) {
     
     this.createForm();
-    this.subscription = this.treeService.getMessage().subscribe(message => {
-      if(message != undefined) {
-      }
-    });
+    
     config.keyboard = false;
     config.backdrop = 'static';
   }

@@ -25,7 +25,7 @@ export class TreeComponent implements OnChanges {
   @Input() public label_to_show = "id";
   @Input() refreshTree;
 
-  current_rootId: any = 398;
+  current_rootId: any = 423;
   selected_edges = [];
 
   public local_data: any;
@@ -193,11 +193,11 @@ export class TreeComponent implements OnChanges {
     cy.layout( this.options ).run();
     cy.userZoomingEnabled( false );
     cy.fit();
-    cy.zoom(0.55);
+    cy.zoom(0.65);
     cy.center();
     cy.pan({
       x: 300,
-      y: 160 
+      y: 60 
     });
 
     // set root

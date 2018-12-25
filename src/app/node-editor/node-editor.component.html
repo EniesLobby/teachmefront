@@ -1,0 +1,83 @@
+<div class="modal-header">
+  <h4 class="modal-title">Edit Node</h4>
+</div>
+<form [formGroup]="nodeEditForm">
+  <div class="modal-body">
+      <div class="container-fluid">
+          <div class="form-group" style="margin: 25px;">
+            <div class="row">
+              <div class="col-6" class="card-custom" style="padding: 25px;">
+
+                <div class="row">
+                    <div class="col-md-auto">
+                      <p style="color: gray; font-size: 20px; padding-top: 5px;">Q:</p>
+                    </div>
+                    
+                    <div class="col">
+                      <div id="question_style">
+                          <quill-editor
+                          [modules]="editorOptions"
+                          [placeholder]="'Insert question here ...'"
+                          [theme]="'bubble'"
+                          [style]="{height: '53px'}"
+                          formControlName="questionEdit" 
+                          (onContentChanged)="onChangeQuestion($event);"
+                          ></quill-editor>
+                      </div>
+                    </div>
+                </div>
+
+                <button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)='addAlias()' *ngIf="showStartAdd">Add answer</button><br /><br />
+                <div formArrayName="aliases">
+                  <div *ngFor="let child of aliases.controls; let i = index" class="row">
+                      <div class="col-md-auto">
+                          <p style="font-size: 20px; padding-top: 5px;">A{{ i + 1 }}:</p>
+                      </div>
+                      <div class="col">
+                        <label>
+                          <div class="answerFocused">
+                            <quill-editor
+                              [placeholder]="'Put your answer here ...'"
+                              [modules]="editorOptions"
+                              [theme]="'bubble'"
+                              [style]="{ height: '60px', width: '800px'}" 
+                              [formControlName]="i"
+                              (onContentChanged)="onAnswerChange(i);">
+                            </quill-editor>
+                          </div>
+                        </label>
+                      </div>
+                      <div class="col">
+                          <button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)='addAlias()'>+</button>
+                          <button style="cursor: pointer" class="btn btn-lg btn-outline-danger" (click)='deletionAlert(i)'>-</button>
+                      </div>
+                    </div>
+
+              </div>
+                <div id="deletion-alert" *ngIf="showDeletionAlert" [ngStyle]="{'left.px': x, 'top.px': y}">
+                    This will delete information and subtree respectively. Are you sure? <br />
+                    <button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)='deleteAnswer()'>YES</button>
+                    <button style="cursor: pointer" class="btn btn-lg btn-outline-danger" (click)='closeAlert()'>CANCEL</button>
+                  </div>
+              </div>
+            <div class="col">
+                <!--*ngIf='showGeneralInformatonEditor'-->
+                <div id="giStyle">
+                  <quill-editor
+                  [placeholder]="'Insert description of the question here ...'" 
+                  [style]="{height: '600px'}" 
+                  id="questionGeneralInformation" 
+                  formControlName="questionGeneralInformation" 
+                  (onContentChanged)="onChangeGeneralInformation($event);"
+                  ></quill-editor>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" (click)="submitForm()">Update</button>
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    </div>
+</form>

@@ -1,25 +1,18 @@
 <form [formGroup]="questionEditForm" (ngSubmit)="submitForm()">
   <div class="form-group">
-    <label for="question">Question</label>
-    <quill-editor
-      [style]="{height: '100px'}" 
-      id="inp" 
+    Q: <quill-editor
+      [placeholder]="'Insert question here ...'"
+      [theme]="'bubble'"
+      [style]="{height: '100px'}"
       formControlName="textArea" 
       (onContentChanged)="onChangeQuestion($event);"
       ></quill-editor>
-    <label for="questionGeneralInformation">General information about question</label>
-    <quill-editor 
+    <quill-editor *ngIf='showGeneralInformatonEditor'
+      [placeholder]="'Insert description of the question here ...'" 
       [style]="{height: '600px'}" 
       id="questionGeneralInformation" 
       formControlName="questionGeneralInformation" 
       (onContentChanged)="onChangeGeneralInformation($event);"
       ></quill-editor>
-      
-      <label for="inp" class="inp">
-        <input type="text" id="inp" placeholder="&nbsp;">
-        <span class="label">Label</span>
-        <span class="border"></span>
-      </label>
-  
     </div>
 </form>

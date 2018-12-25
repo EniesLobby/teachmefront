@@ -14,18 +14,15 @@ export class QuestionEditComponent implements OnInit {
 
   questionEditForm: FormGroup;
   @Input() node: any;
-
   questionHtml: any;
   question: any;
-
   information: any;
   generalInformation: any;
-
   children: any;
   subscription: Subscription;
-
   label_helper: string = "";
   question_edit: string = "";
+  showGeneralInformatonEditor: boolean = false;
 
   constructor(private treeService: TreeService, private formBuilder: FormBuilder) {
     this.createForm();
@@ -56,6 +53,12 @@ export class QuestionEditComponent implements OnInit {
         questionLabel: this.node.questionLabel,
         questionGeneralInformation: ""
       }); 
+
+    if(this.node.question == "") {
+      this.showGeneralInformatonEditor = false;
+    } else {
+      this.showGeneralInformatonEditor = true;
+    }
 
     this.treeService.getInformation(this.node.id).toPromise().then( data => {
       this.information = data;
@@ -95,6 +98,11 @@ export class QuestionEditComponent implements OnInit {
   onChangeQuestion($event) {
     this.questionHtml = $event.html;
     this.question = $event.text;
+    if($event.text == "") {
+      this.showGeneralInformatonEditor = false;
+    } else {
+      this.showGeneralInformatonEditor = true;
+    }
   }
 
   onChangeGeneralInformation($event) {
