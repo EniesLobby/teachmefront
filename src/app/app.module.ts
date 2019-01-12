@@ -23,6 +23,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserServiceComponent } from './user-service/user-service.component';
 import { GeneralInformationEditComponent } from './general-information-edit/general-information-edit.component';
 import { NodeEditorComponent } from './node-editor/node-editor.component';
+import { TreeManagerComponent } from './tree-manager/tree-manager.component';
+ 
 
 const appRoutes: Routes = [
     { path: '', component: UserLoginComponent },
@@ -47,7 +49,8 @@ const appRoutes: Routes = [
     UserLoginComponent,
     UserServiceComponent,
     GeneralInformationEditComponent,
-    NodeEditorComponent
+    NodeEditorComponent,
+    TreeManagerComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -66,7 +69,8 @@ const appRoutes: Routes = [
     AnswersEditComponent,
     InformationEditComponent,
     TreeComponent,
-    NodeEditorComponent
+    NodeEditorComponent,
+    TreeManagerComponent
   ],
   providers: [TreeService],
   bootstrap: [AppComponent]

@@ -25,9 +25,20 @@
                           ></quill-editor>
                       </div>
                     </div>
+                    <div class="col">
+                        <div class="dropdown" style="float: left;">
+                            <button class="dropbtn">{{ dropDownValue }}</button>
+                            <div class="dropdown-content">
+                              <a (click)='checkDropDown()' style="cursor: pointer;">Drop down menu</a>
+                              <a (click)='checkRadioButtons()' style="cursor: pointer;">Radio buttons</a>
+                              <a (click)='checkCheckBoxes()' style="cursor: pointer;">Check boxes</a>
+                              <a (click)='checkButtons()' style="cursor: pointer;">Simple buttons</a>
+                            </div>
+                          </div>
+                    </div>
                 </div>
 
-                <button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)='addAlias()' *ngIf="showStartAdd">Add answer</button><br /><br />
+                <!--<button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)='addAlias()' *ngIf="showStartAdd">Add answer</button>--><br /><br />
                 <div formArrayName="aliases">
                   <div *ngFor="let child of aliases.controls; let i = index" class="row">
                       <div class="col-md-auto">

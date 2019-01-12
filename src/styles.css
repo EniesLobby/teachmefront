@@ -14,13 +14,14 @@
 }
 
 #container {
-    width: 600px;
+    width: 100%;
     margin: 0 auto;
   }
   .drop-shadow {
+    font-size: 20px;
     position: relative;
     float: left;
-    width: 40%;
+    width: 90%;
     padding: 1em;
     margin: 2em 10px 4em;
     background: #fff;
@@ -212,4 +213,58 @@
 .menu-option:hover {
           background: rgba(0, 0, 0, 0.2);
 }
+
+a.c-inline-editor {
+    font-size: 25px;
+    text-decoration: none;
+    color: #428bca;
+    border-bottom: dashed 1px #428bca;
+    cursor: pointer;
+    line-height: 2;
+  }
+  .c-inline-editor.editable-empty,
+  .c-inline-editor.editable-empty:hover,
+  .c-inline-editor.editable-empty:focus,
+  .c-inline-editor.a.editable-empty,
+  .c-inline-editor.a.editable-empty:hover,
+  .c-inline-editor.a.editable-empty:focus {
+    font-style: italic;
+    color: #DD1144;
+    text-decoration: none;
+  }
+  
+  .c-inline-editor.inlineEditForm {
+    font-size: 25px;
+    display: inline-block;
+    white-space: nowrap;
+    margin: 0;
+  }
+  
+  #inlineEditWrapper {
+    display: inline-block;
+  }
+  
+  .c-inline-editor.inlineEditForm input,
+  .c-inline-editor.select {
+    width: auto;
+    display: inline;
+  }
+  
+  .c-inline-editor.inline-editor-button-group {
+    display: inline-block;
+  }
+  
+  .c-inline-editor.editInvalid {
+    color: #a94442;
+    margin-bottom: 0;
+  }
+  
+  .c-inline-editor.error {
+    border-color: #a94442;
+  }
+  
+  [hidden].c-inline-editor {
+    display: none;
+  }
+  
 

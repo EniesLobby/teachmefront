@@ -11,7 +11,16 @@
 
       <form [formGroup]="informationEditForm" (ngSubmit)="submitForm()">
         <div class="form-group">
-          <!--<label for="information">Information</label>-->
+          <div>
+            <h4>Question: {{ currentQuestion }}</h4>
+            <h4>Set advice for following answers:</h4>
+            <div>
+              <ul class="list-group">
+                  <li *ngFor="let item of answersToView" class="list-group-item">{{ item }}</li>
+              </ul>
+                
+            </div>
+          </div>
           <quill-editor [style]="{height: '300px'}" id="information" formControlName="textArea" (onContentChanged)="onInformationChange($event);"></quill-editor>
         </div>
       </form>
@@ -25,7 +34,8 @@
   <div id="AddInfButtonContainer" [ngStyle]="{'left.px': x + 100, 'top.px': y}" *ngIf="showAddInformationButton">
     <button style="cursor: pointer" class="btn btn-lg btn-outline-primary" (click)="open(content)">Edit Information</button>
   </div>
+  
   <hr>
    
-  <pre>{{closeResult}}</pre>
+  <pre> {{ closeResult }} </pre>
 </div>

@@ -19,7 +19,8 @@ export class AddInformationComponent implements OnInit {
   information: any;
   nodeId: any;
   children = [];
-
+  answersToView = [];
+  currentQuestion: String = "";
   informationEditForm: FormGroup;
   
   x = 500;
@@ -33,7 +34,8 @@ export class AddInformationComponent implements OnInit {
         if(message.text == 'view_add_information_button') {
           this.showAddInformationButton = true;
           this.selectedEdges = message.data.selected_edges;
-          this.nodeId = message.data.nodeId
+          this.nodeId = message.data.nodeId;
+          this.getChildren();
         }
 
         if(message.text == 'hide_add_information_button') {
@@ -62,6 +64,7 @@ export class AddInformationComponent implements OnInit {
   async getChildren() {
     await this.treeService.getChildren(this.nodeId).toPromise().then( data => {
       this.children = JSON.parse(data);
+      this.setAnswersToView();
     });
   }
 
@@ -113,6 +116,7 @@ export class AddInformationComponent implements OnInit {
   }
 
   onInformationChange($event) {
+
   }
 
   equalStringCheck(str1, str2) {
@@ -146,9 +150,29 @@ export class AddInformationComponent implements OnInit {
           this.informationEditForm.patchValue({
             textArea: this.information[i].information
           })
+        
         }
       }
     });
+  }
+
+  setAnswersToView() {
+
+    this.answersToView = [];
+    
+    console.log(this.children);
+    console.log(this.selectedEdges);
+    
+    for(let i = 0; i < this.children.length; i ++ ) {
+      for(let j = 0; j < this.selectedEdges.length; j ++ ) {
+
+        if(this.children[i].nodeId == this.selectedEdges[j]) {
+          this.answersToView.push(this.children[i].answer);
+        }
+      }
+    }
+
+    console.log(this.answersToView);
   }
 
   open(content) {

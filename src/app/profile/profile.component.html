@@ -2,11 +2,47 @@
   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
   <div id="container">
       <div class="drop-shadow lifted">
-        <h4>Tree list</h4>
-          <a style="cursor: pointer;" *ngFor="let item of rootId_title" (click)='viewTree(item.rootId)'>{{ item.title.note }}</a>       
-          <a style="cursor: pointer;" (click)="createTree()">Create Tree</a>
-          <a style="cursor: pointer;" (click)="deleteAllNodes()">Delete All Nodes</a>
-        <hr />
+        <h4>Tree list </h4> <br />
+        <div class="container-fluid">
+          <form >
+                  <div class="row" *ngFor="let item of rootId_title; let i = index">
+                    <div class="col">
+                      <div class="treeList">
+                      
+                        <div *ngIf="!allowEdit">  
+                            
+                                <p
+                                style="font-size: 20px; cursor: pointer;" 
+                                (click)='selectTree(item.rootId)'
+                                >{{ item.title }}</p>
+                        </div>  
+
+                        <div *ngIf="allowEdit">
+                                
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <!---->
+                                    
+                    <div class="col">
+                        <button style="cursor: pointer; float: right;" class="btn btn-lg btn-outline-primary" (click)='openTreeManager(item.rootId)'><img src="https://img.icons8.com/metro/26/000000/edit.png"></button>   
+                    </div>
+                  </div>
+          </form>
+        </div>
+          <!--
+          <a style="cursor: pointer;" *ngFor="let item of rootId_title" (click)='viewTree(item.rootId)'>
+              <p style="font-size: 20px;">{{ item.title }}</p>
+          </a>   
+          -->
+          
+          <a style="font-size: 15px; cursor: pointer; float: right;" (click)="createTree()">Create Tree</a>
+         
+          <hr />
+
       </div>
     </div>
 </div>

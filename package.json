@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
     "@ng-bootstrap/ng-bootstrap": "^3.3.0",
+    "@qontu/ngx-inline-editor": "^0.2.0-alpha.12",
     "@types/cytoscape": "^3.2.3",
     "@types/jquery": "^3.3.4",
     "angular-font-awesome": "^3.1.2",

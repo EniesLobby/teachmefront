@@ -43,6 +43,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
   showDeletionAlert: boolean = false;
   indexForDelete: any;
   answersToDeleteAfter = [];
+  dropDownValue: String = "Choose question style ..."
 
   public editorOptions_hidden = {
     toolbar: '.toolbar',
@@ -54,8 +55,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
     ]
   };
 
-  constructor(config: NgbModalConfig, public activeModal: NgbActiveModal, 
-    private treeService: TreeService, private formBuilder: FormBuilder) {
+  constructor(config: NgbModalConfig, public activeModal: NgbActiveModal, private treeService: TreeService, private formBuilder: FormBuilder) {
 
     this.createForm();
     
@@ -135,25 +135,48 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  public checkDropDown() {
+
+    this.dropDownValue = "Drop down menu";
+  }
+
+  public checkRadioButtons() {
+
+    this.dropDownValue = "Radio buttons";
+  }
+
+  public checkCheckBoxes() {
+
+    this.dropDownValue = "Check Boxes (multianswers)";
+  }
+
+  public checkButtons() {
+
+    this.dropDownValue = "Simple buttons"
+  }
+
   private createForm() {
+    
     this.nodeEditForm = this.formBuilder.group(
       {
         questionEdit: "",
         questionGeneralInformation: "",
         aliases: this.formBuilder.array([])
       });
-
   }
 
   sendMessage(): void {
+    
     this.treeService.sendMessage('refresh', null);
   }
 
   updateTree(): void {
+    
     this.treeService.sendMessage('refresh', null);
   }
 
   onChangeQuestion($event) {
+    
     this.questionHtml = $event.html;
     this.question = $event.text;
     if($event.text == "") {
@@ -164,24 +187,29 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
   }
 
   onChangeGeneralInformation($event) {
+    
     this.generalInformation = $event.html;
     this.updateGeneralQuestion();
   }
 
   async updateGeneralQuestion() {
+    
     await this.treeService.updateInformation( this.node.id, String(this.node.id), "", this.generalInformation);
   }
 
   public deletionAlert(index) {
+    
     this.showDeletionAlert = true;
     this.indexForDelete = index;
   }
 
   public closeAlert() {
+    
     this.showDeletionAlert = false;
   }
 
   public deleteAnswer() {
+    
     let index = this.indexForDelete;
     console.log(index);
 
@@ -208,10 +236,12 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
   }
 
   get aliases() {
+    
     return this.nodeEditForm.get('aliases') as FormArray;
   }
 
   addAlias(value: any) {
+    
     this.aliases.push(this.formBuilder.control(value));
     this.addNewAnswer();
   }
@@ -220,7 +250,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
     
     for(let i = 0; i < this.children.length; i ++ ) {
       if( this.children[i].nodeId == current_nodeId) {
-        this.children[i].answer = html.replace(/<[^>]*>/g, '');;
+        this.children[i].answer = html.replace(/<[^>]*>/g, '');
         this.children[i].answerHtml = html;
       }
     }
@@ -259,6 +289,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
   }
 
   onAnswerChange(index) {
+    
     /** */    
     let createNewAnswer: boolean = true;
 
@@ -360,6 +391,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
     .replace(/\\t/g, "")
     .replace(/\\b/g, "")
     .replace(/\\f/g, "");
+
     // remove non-printable and other non-valid JSON chars
     this.question = this.question.replace(/[\u0000-\u0019]+/g,"");
 

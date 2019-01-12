@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h4 class="modal-title">Tree manager</h4>
+</div>
+<div class="modal-body">
+    <div class="container-fluid">
+      <h4>Title: </h4>
+      <form [formGroup]="treeEditForm" (ngSubmit)="submitForm()">
+          <div class="form-group">
+              <quill-editor
+              [modules]="editorOptions"
+              [placeholder]="'Set tree title here ...'"
+              [theme]="'bubble'"
+              [style]="{height: '53px'}"
+              formControlName="titleEdit"
+              ></quill-editor>
+          </div>
+      </form>
+
+      <button style="float: left;" class="btn btn-danger" (click)="deleteTree()">Delete Tree</button>
+    </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" (click)="submitForm()">Update</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  </div>
+</div>

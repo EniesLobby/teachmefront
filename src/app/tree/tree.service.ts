@@ -14,11 +14,13 @@ export class TreeService {
     private subject = new BehaviorSubject<any>("question");
 
     sendMessage(message: string, data: any) {
+        
         this.clearMessage();
         this.subject.next({ text: message, data: data });
     }
  
     clearMessage() {
+        
         this.subject.next("");
     }
  
@@ -31,16 +33,20 @@ export class TreeService {
     }
     
     Url = 'http://localhost:8080/nodes/';
+    
     // {responseType: 'text'}
     getTree(nodeId: any) {
+        
         return this.http.get(this.Url + 'getTreeCT?id=' + nodeId,  { responseType: 'text' });
     }
 
     getUser(email: string) {
+        
         return this.http.get(this.Url + 'user/' + email, { responseType: 'text' })
     }
 
     setTitle(rootId: any, title: any) {
+        
         let body = {
             "title": title
         }
@@ -54,7 +60,6 @@ export class TreeService {
             return this.http.put(this.Url + "node/" + node.id, node, httpOptions);
         } else {
             if(node.nodeId == undefined) {
-                console.log("UDUDUDUDUDUDUDUDU", node);
                 return this.http.put(this.Url + "node/" + node.id, node, httpOptions);
             }
             return this.http.put(this.Url + "node/" + node.nodeId, node, httpOptions);
@@ -62,14 +67,24 @@ export class TreeService {
     }
 
     deleteNode(nodeId: any) {
-        return this.http.delete(this.Url + "deleteNode/" + nodeId, httpOptions);
+        
+        return this.http.delete(this.Url + "node/delete/" + nodeId, httpOptions);
     }
 
+    deleteRootId(rootId: any, email: any) {
+        
+        return this.http.delete(this.Url + "tree/delete/" + rootId + "/user/" + email);
+    }
+
+    // /tree/delete/{rootId}/user/{email}
+
     deleteAnswer(nodeId: any, answer_id: any) {
+        
         return this.http.delete(this.Url + "/deleteAnswer/node/" + nodeId + "/answer/" + answer_id, httpOptions);
     }
 
     AddNode(node: any, id) {
+        
         let body = JSON.stringify(node);
         let received_id;
 
@@ -82,6 +97,7 @@ export class TreeService {
     }
 
     addUser(email: string, name: string, password: string) {
+        
         let body = {
             "email": email,
             "name": name,
@@ -92,6 +108,7 @@ export class TreeService {
     }
 
     addRoot(email: string, rootId: string) {
+        
         let body = {
             "rootId": rootId
         }
@@ -100,27 +117,32 @@ export class TreeService {
     }
 
     checkUser(email: string, password: string) {
+        
         let body = {
             "email": email,
             "password": password
         }
-        console.log(body);
+        
         return this.http.post(this.Url + "user/login", body, httpOptions);
     }
 
     createTree() {
+        
         return this.http.post(this.Url + "createTree", "", httpOptions);
     }
 
     getChildren(nodeId: any) {
+        
         return this.http.get(this.Url + 'node/' + nodeId + '/children', {responseType: 'text' });
     }
 
     getInformation(nodeId: any) {
+        
         return this.http.get(this.Url + 'node/information/' + nodeId + '/');
     }
 
     getInformationOne(nodeId: any) {
+        
         return this.http.get(this.Url + 'node/information_one/' + nodeId + '/');
     }
 
@@ -136,6 +158,7 @@ export class TreeService {
     }
 
     deleteAllNodes() {
+        
         this.http.delete(this.Url + "deleteAll/", httpOptions).subscribe(
             val => {
                 console.log("DELETE call successful value returned in body", 
