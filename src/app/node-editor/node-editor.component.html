@@ -29,10 +29,8 @@
                         <div class="dropdown" style="float: left;">
                             <button class="dropbtn">{{ dropDownValue }}</button>
                             <div class="dropdown-content">
-                              <a (click)='checkDropDown()' style="cursor: pointer;">Drop down menu</a>
-                              <a (click)='checkRadioButtons()' style="cursor: pointer;">Radio buttons</a>
-                              <a (click)='checkCheckBoxes()' style="cursor: pointer;">Check boxes</a>
-                              <a (click)='checkButtons()' style="cursor: pointer;">Simple buttons</a>
+                              <a (click)='checkCheckBoxes()' style="cursor: pointer;">Check boxes (Multiply choice)</a>
+                              <a (click)='checkButtons()' style="cursor: pointer;">Buttons</a>
                             </div>
                           </div>
                     </div>
@@ -75,7 +73,7 @@
                 <!--*ngIf='showGeneralInformatonEditor'-->
                 <div id="giStyle">
                   <quill-editor
-                  [placeholder]="'Insert description of the question here ...'" 
+                  [placeholder]="'Insert general information about the question here ...'" 
                   [style]="{height: '600px'}" 
                   id="questionGeneralInformation" 
                   formControlName="questionGeneralInformation" 

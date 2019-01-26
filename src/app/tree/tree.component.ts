@@ -1,5 +1,6 @@
 import { Component, OnChanges, Renderer, ElementRef, Input, Output, EventEmitter, Inject, OnInit, Injectable, SimpleChanges } from '@angular/core';
 import * as cytoscape from 'cytoscape';
+import dagre from 'cytoscape-dagre';
 import cxtmenu from 'cytoscape-cxtmenu';
 import { TreeService } from './tree.service';
 import * as $ from 'jquery';
@@ -92,9 +93,9 @@ export class TreeComponent implements OnChanges {
       name: 'breadthfirst',
       fit: false, // whether to fit the viewport to the graph
       directed: true, // whether the tree is directed downwards (or edges can point in any direction if false)
-      padding: 30, // padding on fit
       circle: false, // put depths in concentric circles if true, put depths top down if false
-      spacingFactor: 1.75, // positive spacing factor, larger => more space between nodes (N.B. n/a if causes overlap)
+      grid: true,
+      spacingFactor: 5.0, // positive spacing factor, larger => more space between nodes (N.B. n/a if causes overlap)
       boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
       avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
       nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
@@ -178,6 +179,9 @@ export class TreeComponent implements OnChanges {
     
     var self = this;
     // Initialization of the tree instance
+    
+    cytoscape.use( dagre );
+
     let cy_contianer = this.renderer.selectRootElement("#cy");
     let cy = cytoscape({
 
@@ -193,23 +197,22 @@ export class TreeComponent implements OnChanges {
     cy.layout( this.options ).run();
     cy.userZoomingEnabled( false );
     cy.fit();
-    cy.zoom(0.65);
-    cy.center();
+    cy.zoom(0.3);
     cy.pan({
-      x: 300,
-      y: 60 
+      x: 400,
+      y: 200
     });
 
     // set root
-
     if(rootId != undefined ) {
       var options = {
         name: 'breadthfirst',
         fit: false, // whether to fit the viewport to the graph
         directed: true, // whether the tree is directed downwards (or edges can point in any direction if false)
-        padding: 30, // padding on fit
+        padding: 50, // padding on fit
         circle: false, // put depths in concentric circles if true, put depths top down if false
-        spacingFactor: 1.75, // positive spacing factor, larger => more space between nodes (N.B. n/a if causes overlap)
+        grid: true,
+        spacingFactor: 2.8, // positive spacing factor, larger => more space between nodes (N.B. n/a if causes overlap)
         boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
         avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
         nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
@@ -274,6 +277,8 @@ export class TreeComponent implements OnChanges {
       }
     });
 
+    // update position of the nodes
+
 
     // click on the edge [***INFORMATION MECHANISM*********]
     cy.on('tap', 'edge', function(evt) {
@@ -296,7 +301,7 @@ export class TreeComponent implements OnChanges {
       self.selected_edges.push(edge.target().id());
 
       var container = {
-        nodeId: edge.source().id(),
+        node: edge.source().data(),
         selected_edges: self.selected_edges,
       }
 

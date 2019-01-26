@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TreeService } from '../tree/tree.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
   styleUrls: ['./add-information.component.css'],
   providers: [NgbActiveModal]
 })
-export class AddInformationComponent implements OnInit {
+export class AddInformationComponent implements OnInit, OnDestroy {
   
   subscription: Subscription;
   showAddInformationButton: boolean = false;
@@ -22,11 +22,13 @@ export class AddInformationComponent implements OnInit {
   answersToView = [];
   currentQuestion: String = "";
   informationEditForm: FormGroup;
+  node: any;
   
   x = 500;
   y = 500;
   
   constructor(private modalService: NgbModal, private formBuilder: FormBuilder, public activeModal: NgbActiveModal, private treeService: TreeService) { 
+    
     this.createForm();
     this.subscription = this.treeService.getMessage().subscribe(message => {
         if(message != undefined) {
@@ -34,7 +36,10 @@ export class AddInformationComponent implements OnInit {
         if(message.text == 'view_add_information_button') {
           this.showAddInformationButton = true;
           this.selectedEdges = message.data.selected_edges;
-          this.nodeId = message.data.nodeId;
+          this.nodeId = message.data.node.id;
+          this.node = message.data.node;
+          this.currentQuestion = message.data.node.question;
+          console.log(this.node);
           this.getChildren();
         }
 
@@ -52,6 +57,10 @@ export class AddInformationComponent implements OnInit {
 
   ngOnInit() {
     this.treeService.sendMessage("radial_menu_toggle_off", "");
+  }
+
+  ngOnDestroy() {
+    this.information = [];
   }
 
   private createForm() {
@@ -98,21 +107,12 @@ export class AddInformationComponent implements OnInit {
       })
     }
 
-    this.treeService.EditNode("", null).subscribe(
-      val => {
-
-      },
-      response => {
-
-      },
-      () => {
-
-      }
-    );
-
     let idOfNodes = this.arrToString();
     let information_html = this.informationEditForm.value.textArea.replace(/(\r\n\t|\n|\r\t)/gm, "");
     this.treeService.updateInformation(this.nodeId, idOfNodes, "", information_html);
+    this.informationEditForm.patchValue({
+      textArea: ""
+    })
   }
 
   onInformationChange($event) {
@@ -176,7 +176,16 @@ export class AddInformationComponent implements OnInit {
   }
 
   open(content) {
-    this.modalService.open(content, {windowClass : "huge-modal"}).result.then((result) => {
+
+    this.informationEditForm.patchValue({
+      textArea: ""
+    })
+
+    this.modalService.open(content, { 
+      windowClass : "huge-modal",
+      keyboard: false,
+      backdrop: 'static'
+    }).result.then((result) => {
 
     }, (reason) => {
     });

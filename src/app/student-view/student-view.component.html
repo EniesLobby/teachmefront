@@ -1,0 +1,93 @@
+<div class="outer-div" *ngIf="!demoMode">
+    <div id="header_student_card">
+      <h4>{{ title }}</h4>
+    </div>
+    <div id="main_student_card">
+      <div id="content_block" *ngIf='!finish'>
+          <div [innerHTML]="currentInformation"></div>
+      </div>
+
+      <div *ngIf="questionType=='check_box'" id="check_box">
+          <div class="control-group">
+             <div class="list-group">
+               <div class="list-group-item list-group-item-action active">
+                  Q: {{ currentQuestion }}
+               </div>
+               <div class="list-group-item list-group-item-action" *ngFor="let child of children; let i = index">
+                  <label class="control control-checkbox" >
+                      {{ i + 1 }}. {{ child.answer }}
+                              <input type="checkbox" (click)='multiAnswerChoosen(child.nodeId)'/>
+                          <div class="control_indicator"></div>
+                      </label>
+               </div>
+              </div>
+          </div>
+
+          <button class="btn btn-lg btn-outline-primary" (click)='nextPage()' style="float: right; width: 100px; cursor: pointer;">Next</button>
+      </div>
+
+      <div *ngIf="questionType=='button'">
+          <div id="poll_block" class="float bottom" *ngIf='!finish'>
+              <div class="list-group">
+                  <button type="button" class="list-group-item list-group-item-action active">
+                    Q: {{ currentQuestion }}
+                  </button>
+                  <button
+                  *ngFor="let child of children; let i = index" 
+                  type="button" class="list-group-item list-group-item-action"
+                  (click)='buttonClicked(child.nodeId)'>
+                  {{ i + 1 }}. {{ child.answer }}</button>
+                </div>
+          </div>
+      </div>
+
+      <div *ngIf="finish">
+        <div *ngFor="let item of sisStack">
+          <div  [innerHTML]="item.information"></div>
+          <hr />
+        </div>
+        
+        <button class="btn btn-lg btn-outline-primary" (click)='mainPage()'>Back to the main page</button>    
+      </div>
+      
+      <br />
+      <button class="btn btn-lg btn-outline-primary" *ngIf="showBackButton"
+      (click)='goBack()'
+      ><img src="https://img.icons8.com/color/26/000000/back.png"></button>    
+    </div>  
+</div>
+
+<div *ngIf="demoMode">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Question: {{ currentQuestion }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+        <div *ngIf='!finish'>
+            <div [innerHTML]="currentInformation"></div>
+        </div>
+
+        <div *ngIf="finish">
+            <div *ngFor="let item of sisStack">
+              <div  [innerHTML]="item.information"></div>
+              <hr />
+            </div>
+        </div>
+
+        <div id="poll_block" class="float bottom" *ngIf='!finish'>
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action active">
+                  Q: {{ currentQuestion }}
+                </button>
+                <button
+                *ngFor="let child of children; let i = index"
+                (click)='buttonClicked(child.nodeId)' 
+                type="button" class="list-group-item list-group-item-action" >{{ i + 1 }}. {{ child.answer }}</button>
+              </div>
+        </div>
+      
+    </div>
+</div>

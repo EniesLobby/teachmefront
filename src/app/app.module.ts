@@ -24,11 +24,13 @@ import { UserServiceComponent } from './user-service/user-service.component';
 import { GeneralInformationEditComponent } from './general-information-edit/general-information-edit.component';
 import { NodeEditorComponent } from './node-editor/node-editor.component';
 import { TreeManagerComponent } from './tree-manager/tree-manager.component';
+import { StudentViewComponent } from './student-view/student-view.component';
  
 
 const appRoutes: Routes = [
     { path: '', component: UserLoginComponent },
-    { path: 'tree', component: TreeComponent }
+    { path: 'tree', component: TreeComponent },
+    { path: 'student', component: StudentViewComponent }
   ];
 
 @NgModule({
@@ -50,7 +52,8 @@ const appRoutes: Routes = [
     UserServiceComponent,
     GeneralInformationEditComponent,
     NodeEditorComponent,
-    TreeManagerComponent
+    TreeManagerComponent,
+    StudentViewComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -70,7 +73,8 @@ const appRoutes: Routes = [
     InformationEditComponent,
     TreeComponent,
     NodeEditorComponent,
-    TreeManagerComponent
+    TreeManagerComponent,
+    StudentViewComponent
   ],
   providers: [TreeService],
   bootstrap: [AppComponent]

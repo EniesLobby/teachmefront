@@ -2,7 +2,7 @@
 <div *ngIf="showModal">
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Information update</h4>
+      <h4 class="modal-title" id="modal-basic-title">Question: {{ currentQuestion }}</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -12,22 +12,33 @@
       <form [formGroup]="informationEditForm" (ngSubmit)="submitForm()">
         <div class="form-group">
           <div>
-            <h4>Question: {{ currentQuestion }}</h4>
-            <h4>Set advice for following answers:</h4>
-            <div>
               <ul class="list-group">
-                  <li *ngFor="let item of answersToView" class="list-group-item">{{ item }}</li>
-              </ul>
-                
+                  <li class="list-group-item list-group-item-action list-group-item-primary"><h4>Set specific advice for the following answers:</h4></li>
+                  <li class="list-group-item list-group-item-action list-group-item-primary">
+                      <ul class="list-group">
+                          <li *ngFor="let item of answersToView" class="list-group-item">{{ item }}</li>
+                      </ul>
+                  </li>
+                </ul>
+            <div>
             </div>
+          </div> <br />
+          <div id="add_information">
+            <quill-editor
+                [theme]="'bubble'"
+                [style]="{height: '100%'}" 
+                id="information" 
+                formControlName="textArea" 
+                (onContentChanged)="onInformationChange($event);">
+              
+              </quill-editor>
           </div>
-          <quill-editor [style]="{height: '300px'}" id="information" formControlName="textArea" (onContentChanged)="onInformationChange($event);"></quill-editor>
         </div>
       </form>
       
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="addInformation(); modal.close('Save click')">Update</button>
+      <button type="button" class="btn btn-success" (click)="addInformation(); modal.close('Save click')">Update</button>
     </div>
   </ng-template>
   

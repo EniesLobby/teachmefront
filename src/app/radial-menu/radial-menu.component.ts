@@ -3,6 +3,7 @@ import { TreeService } from '../tree/tree.service';
 import { Subscription } from 'rxjs';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NodeEditorComponent } from '../node-editor/node-editor.component'
+import { StudentViewComponent } from '../student-view/student-view.component';
 
 @Component({
   selector: 'app-radial-menu',
@@ -57,8 +58,20 @@ export class RadialMenuComponent implements OnInit, OnChanges {
   }
 
   openNodeEditor() {
-    const modalRef = this.modalService.open(NodeEditorComponent, { windowClass : "huge-modal"});
+    
+    const modalRef = this.modalService.open(NodeEditorComponent, 
+      { windowClass : "huge-modal",
+        keyboard : false,
+        backdrop : 'static'
+      });
+
     modalRef.componentInstance.node = this.current_node;
+  }
+
+  openDemo() {
+    const modalRef = this.modalService.open(StudentViewComponent, { windowClass : "huge-modal" });
+    modalRef.componentInstance.demoMode = true;
+    modalRef.componentInstance.demoNodeId = this.current_node.id;
   }
 
   about() {
@@ -71,9 +84,11 @@ export class RadialMenuComponent implements OnInit, OnChanges {
     });
 
     if( this.leftClickedCoordinates != undefined ) {
+
       this.x = this.leftClickedCoordinates.x;
       this.y = this.leftClickedCoordinates.y;
       this.showRadialMenu = true;
+    
     } else {
       this.showRadialMenu = false;
     }

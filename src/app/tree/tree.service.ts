@@ -33,6 +33,11 @@ export class TreeService {
     }
     
     Url = 'http://localhost:8080/nodes/';
+
+    getNode(nodeId: any) {
+        
+        return this.http.get(this.Url + 'node/' + nodeId, { responseType: 'text' });
+    }
     
     // {responseType: 'text'}
     getTree(nodeId: any) {
@@ -141,7 +146,7 @@ export class TreeService {
         return this.http.get(this.Url + 'node/information/' + nodeId + '/');
     }
 
-    getInformationOne(nodeId: any) {
+    getInformationOne(nodeId: any): Observable<any> {
         
         return this.http.get(this.Url + 'node/information_one/' + nodeId + '/');
     }

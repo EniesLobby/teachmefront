@@ -44,6 +44,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
   indexForDelete: any;
   answersToDeleteAfter = [];
   dropDownValue: String = "Choose question style ..."
+  questionType: String = "buttons"
 
   public editorOptions_hidden = {
     toolbar: '.toolbar',
@@ -67,6 +68,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
 
     this.getChildren();
     this.treeService.sendMessage("radial_menu_toggle_off", "");
+    this.setQuestionTypeValue();
 
     this.treeService.getInformation(this.node.id).toPromise().then( data => {
       this.information = data;
@@ -103,6 +105,19 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
     this.setTreeData();
   }
 
+  public setQuestionTypeValue() {
+
+    let labelKeyValue = {
+      "": "Choose question style ...",
+      "check_box": "Check Boxes (multianswers)",
+      "button": "Buttons"
+    };
+
+    if(this.node != undefined) {
+      this.dropDownValue = labelKeyValue[this.node.questionLabel];
+    }
+  }
+ 
   public ngOnDestroy(): any {
     
     if(this.deleteAfterUpdate.length == 0) {
@@ -135,24 +150,16 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  public checkDropDown() {
-
-    this.dropDownValue = "Drop down menu";
-  }
-
-  public checkRadioButtons() {
-
-    this.dropDownValue = "Radio buttons";
-  }
-
   public checkCheckBoxes() {
 
     this.dropDownValue = "Check Boxes (multianswers)";
+    this.questionType = "check_box";
   }
 
   public checkButtons() {
 
     this.dropDownValue = "Simple buttons"
+    this.questionType = "button";
   }
 
   private createForm() {
@@ -412,6 +419,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
     this.questionHtml = this.questionHtml.replace(/(\r\n\t|\n|\r\t)/gm,"");
     this.node.question = this.question;
     this.node.questionHtml = this.questionHtml;
+    this.node.questionLabel = this.questionType;
 
     this.treeService.EditNode(this.node, null).subscribe(
       val => {
