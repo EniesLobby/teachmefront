@@ -35,12 +35,30 @@ export class StudentViewComponent implements OnInit {
   typeButtons: boolean = true;
   typeCheckbox: boolean = false;
   multiAnswers = [];
+  questions = {};
+  rootIdTest = [];
+  nextClicked: boolean = false;
+  showPrevious: boolean = true;
+  
+  started = 0;
+  finished = 0;
+
+  currentQuestionList = [];
 
   @Input() demoMode: boolean = false;
   @Input() demoNodeId: any;
 
+  @Input() currentNodeId: any;
+  @Input() currentSisStack: any;
+  @Input() currentGisStack: any;
+  
+
   showBackButton: boolean = true;
   finalView: boolean = false;
+  informationFinal = [];
+
+  startedList = [];
+  finishedList = [];
 
 
   constructor(private modalService: NgbModal, public activeModal: NgbActiveModal, private formBuilder: FormBuilder, private treeService: TreeService, private route: ActivatedRoute) { 
@@ -49,11 +67,46 @@ export class StudentViewComponent implements OnInit {
         
       if(message != undefined) {
         
-          if(message.text == 'view_add_information_button') {
-  
+          if(message.text == 'information') {
+            this.informationFinal.push(message.data);
+            console.log("polovina peredozi aresti", this.informationFinal);
           }
+
+          if(message.text == 'show_final_result') {
+            this.constructView();
+          }
+
+          if(message.text == 'started') {
+            this.started ++;
+            if(!this.startedList.includes(message.data)) {
+              this.startedList.push(message.data)
+            }
+          }
+
+          if(message.text == 'finished') {
+            this.finished ++;
+            if(!this.finishedList.includes(message.data)) {
+              this.finishedList.push(message.data)
+            }
+          }
+
+          if(message.text == 'started_minus') {
+            this.started --;
+          }
+
+
+          console.log("sF", this.started, this.finished);
       }
     });
+  }
+
+  constructView() {
+
+  }
+
+  changeNext() {
+    this.nextClicked = true;
+    this.showPrevious = false;
   }
 
   private createForm() {
@@ -66,6 +119,7 @@ export class StudentViewComponent implements OnInit {
   ngOnInit() {
 
     this.rootId = this.route.snapshot.queryParamMap.get('tree');
+    this.rootIdTest.push(this.rootId);
 
     console.log(this.demoMode);
 
@@ -84,6 +138,42 @@ export class StudentViewComponent implements OnInit {
       this.getInformation(this.rootId);
       this.getGeneralInformation(this.rootId);
     }
+  }
+
+  updateView(nodeId: string) {
+    
+    this.treeService.getNode(nodeId).toPromise().then( data => {
+
+      if(data.length != 0) {
+        this.treeData = JSON.parse(data);
+
+        this.treeService.getChildren(nodeId).toPromise().then( data => {
+          var children = JSON.parse(data);
+          
+          this.treeService.getInformation(nodeId).toPromise().then( data => {
+            if(data != null ) {
+              this.information = data;
+
+              for(let i = 0; i < this.information.length; i ++ ) {
+                if(this.equalStringCheck(this.information[i].idOfNodes, this.rootId)) {
+                  this.currentInformation = this.information[i].information;
+                }
+              }
+
+              this.currentQuestionList.push({
+                currentQuestion: this.treeData.question,
+                questionType: this.treeData.questionLabel,
+                currentInformation: this.currentInformation,
+                children: children
+              })
+
+            }
+          });
+    
+        });
+      
+      }
+    });
   }
 
   refreshView(nodeId: string) {
@@ -124,6 +214,11 @@ export class StudentViewComponent implements OnInit {
       nodeId: nodeId,
       information: this.findInformationByNodeId(nodeId, this.information)
       });
+
+    for(let i = 0; i < this.multiAnswers.length; i ++ ) {
+      this.updateView(this.multiAnswers[i]);
+      console.log(this.currentQuestionList);
+    }
   }
 
   multiAnswerChoosen(nodeId: any) {
@@ -168,6 +263,12 @@ export class StudentViewComponent implements OnInit {
 
         this.currentQuestion = this.treeData.question;
         this.questionType = this.treeData.questionLabel;
+        
+        this.currentQuestionList.push({
+          currentQuestion: this.treeData.question,
+          questionType: this.treeData.questionLabel
+        })
+
         console.log(this.questionType);
       }
     });
@@ -202,8 +303,7 @@ export class StudentViewComponent implements OnInit {
         this.information = data;
         console.log("this.information = ", data, this.rootId);
         for(let i = 0; i < this.information.length; i ++ ) {
-        
-          
+           
           if(this.equalStringCheck(this.information[i].idOfNodes, this.rootId)) {
             this.currentInformation = this.information[i].information;
           }

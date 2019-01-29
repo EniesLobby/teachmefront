@@ -25,6 +25,7 @@ import { GeneralInformationEditComponent } from './general-information-edit/gene
 import { NodeEditorComponent } from './node-editor/node-editor.component';
 import { TreeManagerComponent } from './tree-manager/tree-manager.component';
 import { StudentViewComponent } from './student-view/student-view.component';
+import { BlockViewComponent } from './student-view/block-view/block-view.component';
  
 
 const appRoutes: Routes = [
@@ -53,7 +54,8 @@ const appRoutes: Routes = [
     GeneralInformationEditComponent,
     NodeEditorComponent,
     TreeManagerComponent,
-    StudentViewComponent
+    StudentViewComponent,
+    BlockViewComponent
   ],
   imports: [
     RouterModule.forRoot(

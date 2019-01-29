@@ -194,14 +194,13 @@ export class TreeComponent implements OnChanges {
       'width': 7
     });
 
-    cy.layout( this.options ).run();
     cy.userZoomingEnabled( false );
-    cy.fit();
     cy.zoom(0.3);
     cy.pan({
       x: 400,
-      y: 200
+      y: 140
     });
+    cy.layout( this.options ).run();
 
     // set root
     if(rootId != undefined ) {

@@ -1,5 +1,6 @@
-<div class="outer-div" *ngIf="!demoMode">
-    <div id="header_student_card">
+<!--
+
+  <div id="header_student_card">
       <h4>{{ title }}</h4>
     </div>
     <div id="main_student_card">
@@ -20,7 +21,7 @@
                           <div class="control_indicator"></div>
                       </label>
                </div>
-              </div>
+            </div>
           </div>
 
           <button class="btn btn-lg btn-outline-primary" (click)='nextPage()' style="float: right; width: 100px; cursor: pointer;">Next</button>
@@ -30,7 +31,7 @@
           <div id="poll_block" class="float bottom" *ngIf='!finish'>
               <div class="list-group">
                   <button type="button" class="list-group-item list-group-item-action active">
-                    Q: {{ currentQuestion }}
+                    Q1: {{ currentQuestion }}
                   </button>
                   <button
                   *ngFor="let child of children; let i = index" 
@@ -55,6 +56,21 @@
       (click)='goBack()'
       ><img src="https://img.icons8.com/color/26/000000/back.png"></button>    
     </div>  
+-->
+
+
+<div class="outer-div" *ngIf="!demoMode">
+    <div id="header_student_card">
+        <h4>{{ title }}</h4>
+    </div>
+    <div id="main_student_card">
+        <app-block-view 
+            [nodeId]='rootIdTest' 
+            [nextClicked]='nextClicked' 
+            [showPrevious]='showPrevious'
+            [sisStackBlock]=''
+            [gisStackBlock]=''></app-block-view>
+    </div>
 </div>
 
 <div *ngIf="demoMode">
@@ -66,28 +82,12 @@
     </div>
     <div class="modal-body">
 
-        <div *ngIf='!finish'>
-            <div [innerHTML]="currentInformation"></div>
+        <div id="header_student_card">
+            <h4>{{ title }}</h4>
         </div>
-
-        <div *ngIf="finish">
-            <div *ngFor="let item of sisStack">
-              <div  [innerHTML]="item.information"></div>
-              <hr />
-            </div>
+        <div id="main_student_card">
+            <app-block-view [nodeId]='demoNodeId' [nextClicked]='nextClicked' [showPrevious]='showPrevious'></app-block-view>
         </div>
-
-        <div id="poll_block" class="float bottom" *ngIf='!finish'>
-            <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action active">
-                  Q: {{ currentQuestion }}
-                </button>
-                <button
-                *ngFor="let child of children; let i = index"
-                (click)='buttonClicked(child.nodeId)' 
-                type="button" class="list-group-item list-group-item-action" >{{ i + 1 }}. {{ child.answer }}</button>
-              </div>
-        </div>
-      
     </div>
 </div>
+

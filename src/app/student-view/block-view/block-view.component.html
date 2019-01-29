@@ -1,0 +1,44 @@
+<div *ngFor="let block of finalObject">
+
+  <div *ngIf="showPrevious">
+
+      <div [innerHTML]="block.information"></div>
+    
+      <div class="control-group">
+          <div class="list-group">
+            <div class="list-group-item list-group-item-action active">
+               Q: {{ block.node.question }}
+            </div>
+            <div class="list-group-item list-group-item-action" *ngFor="let child of block.children; let i = index">
+               <label class="control control-checkbox" >
+                   {{ i + 1 }}. {{ child.answer }}
+                           <input type="checkbox" (click)='multiAnswerChoosen(child.nodeId)'/>
+                       <div class="control_indicator"></div>
+                   </label>
+            </div>
+         </div>
+    </div>
+  </div>
+ </div>
+
+<button
+  *ngIf='nextReady && showButton'
+  class="btn btn-lg btn-outline-primary" 
+  (click)='nextPage()' 
+  style="float: right; width: 100px; cursor: pointer;">Next</button>
+
+<button
+  *ngIf='showButton && !nextReady && !finalObject.length == 0'
+  class="btn btn-lg btn-outline-primary" 
+  (click)='nextPage()' 
+  style="float: right; width: 100px; cursor: pointer;" disabled>Next</button>
+
+ <div *ngIf='nextClicked'>
+    <app-block-view *ngIf='!finish' [nodeId]='multiAnswers' [sisStackBlock]='sisStackBlock' [gisStackBlock]='gisStackBlock'></app-block-view>  
+ </div>
+
+ <div *ngIf='finalObject.length == 0'>
+   <div *ngFor="let block of sisStackBlock">
+    <div [innerHTML]="block"></div>
+  </div>
+ </div>

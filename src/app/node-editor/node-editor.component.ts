@@ -114,6 +114,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
     };
 
     if(this.node != undefined) {
+      console.log(this.dropDownValue)
       this.dropDownValue = labelKeyValue[this.node.questionLabel];
     }
   }

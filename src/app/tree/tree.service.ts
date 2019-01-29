@@ -151,6 +151,10 @@ export class TreeService {
         return this.http.get(this.Url + 'node/information_one/' + nodeId + '/');
     }
 
+    getSpecificInformation(nodeId: any): Observable<any> {
+        return this.http.get(this.Url + '/node/informationspec/' + nodeId + '/');
+    }
+
     async updateInformation(nodeId: any, answer_id: any, notes: string, information: string) {
 
         let payLoad = {
