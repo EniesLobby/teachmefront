@@ -10,23 +10,20 @@
                       <div class="treeList">
                       
                         <div *ngIf="!allowEdit">  
-                            
-                              <p
-                                style="font-size: 15px; cursor: pointer;" 
-                                (click)='selectTree(item.rootId)' *ngIf='item.title != ""'>
-                                {{ item.title }}
-                              </p>
-                              <p
-                              style="font-size: 15px; cursor: pointer;" 
-                              (click)='selectTree(item.rootId)' *ngIf='item.title == ""'>
-                              Unnamed tree
+                            <p style="font-size: 15px; cursor: pointer;" 
+                              (click)='selectTree(item.rootId)' *ngIf='item.title != ""'>
+                              {{ item.title }}
+                            </p>
+                            <p style="font-size: 15px; cursor: pointer;" 
+                            (click)='selectTree(item.rootId)' *ngIf='item.title == ""'>
+                            Unnamed tree
                             </p>
                         </div>  
                       </div>
                     </div>
         
                     <div class="col-md-auto">
-                        <button class="button_edit" style="cursor: pointer; float: right;" class="btn btn-md btn-outline-primary" (click)='openTreeManager(item.rootId)'>
+                        <button class="button_edit" style="cursor: pointer; float: right;  margin-top: 12px;" class="btn btn-md btn-outline-primary" (click)='openTreeManager(item.rootId)'>
                           <img src="https://img.icons8.com/metro/26/000000/edit.png" width="15" heigt="15">
                         </button>   
                     </div>
@@ -34,6 +31,9 @@
           </form>
         </div>
       <br />
+      <button class="button_edit" style="font-size: 15px; cursor: pointer; float: left;" class="btn btn-md btn-outline-warning" (click)="LogOut()">
+            Log out 
+        </button>
         <button class="button_edit" style="font-size: 15px; cursor: pointer; float: right;" class="btn btn-md btn-outline-primary" (click)="createTree()">
             Create new Tree 
         </button> <br />

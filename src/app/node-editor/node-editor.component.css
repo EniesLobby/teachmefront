@@ -18,7 +18,7 @@
     border-style: solid;
     border-width: 0px 0px 1px 0px;
     border-color: rgba(44, 114, 255, 0.651);
-    font-size: 30px;
+    font-size: 13px;
     box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -26,16 +26,16 @@
     border-style: solid;
     border-width: 0px 0px 1px 4px;
     border-color: rgba(44, 114, 255, 0.651);
-    font-size: 20px;
+    font-size: 13px;
     box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.1);
 }
 
 #question_style {
-    width: 700px;
+    width: 400px;
     border-style: solid;
     border-width: 0px 0px 2px 0px;
     border-color: rgba(44, 114, 255, 0.651);
-    font-size: 30px;
+    font-size: 16px;
 }
 
 #deletion-alert {    
@@ -57,7 +57,7 @@
     border-style: solid;
     border-width: 0px 0px 0px 0px;
     border-color: rgba(44, 114, 255, 0.651);
-    font-size: 40px;
+    font-size: 15px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 }
 
@@ -67,7 +67,7 @@
     height: 53px;
     background-color: rgba(44, 114, 255, 0.651);
     color: white;
-    font-size: 20px;
+    font-size: 15px;
     border: none;
     cursor: pointer;
   }

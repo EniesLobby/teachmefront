@@ -118,14 +118,16 @@ export class StudentViewComponent implements OnInit {
 
   ngOnInit() {
 
-    this.rootId = this.route.snapshot.queryParamMap.get('tree');
+    if(this.demoMode) {
+      this.rootId = this.demoNodeId;
+    } else {
+      this.rootId = this.route.snapshot.queryParamMap.get('tree');
+    }
+
     this.rootIdTest.push(this.rootId);
 
     console.log(this.demoMode);
 
-    if(this.demoMode) {
-      this.rootId = this.demoNodeId;
-    }
 
     if(this.rootId == "") {
       

@@ -61,6 +61,7 @@ export class BlockViewComponent implements OnInit {
     let constructedId = this.constructId(this.nodeId);
 
     this.treeService.getSpecificInformation(constructedId).toPromise().then( data => {
+      console.log("HUY SRABOTAET", constructedId )
       if(data != null ) {
         console.log("HUY SRABOTAET", data)
         this.sisStackBlock.push(data.information);
@@ -80,6 +81,10 @@ export class BlockViewComponent implements OnInit {
       {
 
       });
+  }
+
+  homePage() {
+    window.location.reload();
   }
 
   constructId(arr: any) {

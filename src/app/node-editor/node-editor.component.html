@@ -6,7 +6,7 @@
       <div class="container-fluid">
           <div class="form-group" style="margin: 25px;">
             <div class="row">
-              <div class="col-6" class="card-custom" style="padding: 25px;">
+              <div class="col-3" class="card-custom" style="padding: 25px;">
 
                 <div class="row">
                     <div class="col-md-auto">
@@ -19,9 +19,10 @@
                           [modules]="editorOptions"
                           [placeholder]="'Insert question here ...'"
                           [theme]="'bubble'"
-                          [style]="{height: '53px'}"
+                          [style]="{height: '55px'}"
                           formControlName="questionEdit" 
                           (onContentChanged)="onChangeQuestion($event);"
+                          (paste)="onChangeQuestion($event);"
                           ></quill-editor>
                       </div>
                     </div>
@@ -40,7 +41,7 @@
                 <div formArrayName="aliases">
                   <div *ngFor="let child of aliases.controls; let i = index" class="row">
                       <div class="col-md-auto">
-                          <p style="font-size: 20px; padding-top: 5px;">A{{ i + 1 }}:</p>
+                          <p style="font-size: 14px; padding-top: 5px;">A{{ i + 1 }}:</p>
                       </div>
                       <div class="col">
                         <label>
@@ -49,9 +50,10 @@
                               [placeholder]="'Put your answer here ...'"
                               [modules]="editorOptions"
                               [theme]="'bubble'"
-                              [style]="{ height: '60px', width: '800px'}" 
+                              [style]="{ height: '55px', width: '500px'}" 
                               [formControlName]="i"
-                              (onContentChanged)="onAnswerChange(i);">
+                              (onContentChanged)="onAnswerChange(i);"
+                              (paste)="onAnswerChange(i);">
                             </quill-editor>
                           </div>
                         </label>
@@ -78,7 +80,7 @@
                   id="questionGeneralInformation" 
                   formControlName="questionGeneralInformation" 
                   (onContentChanged)="onChangeGeneralInformation($event);"
-                  ></quill-editor>
+                  (paste)="onChangeGeneralInformation($event);"></quill-editor>
               </div>
             </div>
           </div>

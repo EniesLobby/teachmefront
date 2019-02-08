@@ -86,8 +86,12 @@
             <h4>{{ title }}</h4>
         </div>
         <div id="main_student_card">
-            <app-block-view [nodeId]='demoNodeId' [nextClicked]='nextClicked' [showPrevious]='showPrevious'></app-block-view>
+            <app-block-view 
+                [nodeId]='rootIdTest' 
+                [nextClicked]='nextClicked' 
+                [showPrevious]='showPrevious'
+                [sisStackBlock]=''
+                [gisStackBlock]=''></app-block-view>
         </div>
-    </div>
 </div>
 

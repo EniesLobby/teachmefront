@@ -89,13 +89,12 @@ export class HelperComponent implements OnInit {
 
   helpButtonClick() {
     this.treeService.sendMessage("refresh", null);
-    this.showHelperProfile = true;
-    this.showHelperSupporter = true;
+    this.showHelperProfile = !this.showHelperProfile;
     this.helpButton = true;
     this.showHelperHelpButton = true;
 
     if(this.x != undefined && this.y != undefined) {
-      this.showHelperRoot = true;
+      this.showHelperRoot = !this.showHelperProfile;
     }
   }
 

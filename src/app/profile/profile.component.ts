@@ -48,6 +48,10 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  LogOut() {
+    
+  }
+
   public selectTree(rootId: any) {
     this.treeService.sendMessage("rootId", rootId);
   }

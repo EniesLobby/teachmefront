@@ -152,7 +152,7 @@ export class TreeService {
     }
 
     getSpecificInformation(nodeId: any): Observable<any> {
-        return this.http.get(this.Url + '/node/informationspec/' + nodeId + '/');
+        return this.http.get(this.Url + 'node/informationspec/' + nodeId + '/');
     }
 
     async updateInformation(nodeId: any, answer_id: any, notes: string, information: string) {
