@@ -1,6 +1,6 @@
-<div class="card" style="width: 30%; position: absolute; left: 40%; top:20%">
+<div class="card" id='login_box'>
   <div class="card-body">
-    <h5 class="card-title">Log in</h5>
+    <p style="font-size: 25px; color: rgba(13, 69, 181, 0.651);">Welcome!</p>
     <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
       <div class="form-group">
         <input formControlName="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
@@ -8,7 +8,9 @@
       <div class="form-group">
         <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" style='float: right; cursor: pointer;'>
+        Login
+      </button>
     </form>
   </div>
 </div>

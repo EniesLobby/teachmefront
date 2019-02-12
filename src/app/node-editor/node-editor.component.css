@@ -9,6 +9,14 @@
     float: right;
 }
 
+#node_editor_logo {
+    width: 50px; /*width of your image*/
+    height: 50px; /*height of your image*/
+    background-image: url('/assets/logo/logo.png');
+    margin:0; /* If you want no margin */
+    padding:0; /*if your want to padding */
+}
+
 #answers_text_helper {
     padding-top: 10px;
     padding-left: 5px;

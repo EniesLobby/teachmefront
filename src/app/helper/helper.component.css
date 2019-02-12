@@ -7,14 +7,14 @@
   width: 400px;
   height: 200px;
   z-index: 10;
-  background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+  background-color: rgba(226, 230, 0, 0.2); /*dim the background*/
   pointer-events: none;
 }
 
 #helper_QuestionEdit_line {
   width: 112px;
   height: 47px;
-  border-bottom: 1px solid rgba(0, 77, 230, 0.8);
+  border-bottom: 1px solid rgba(226, 230, 0, 0.2);
   position: absolute;
 }
 
@@ -25,7 +25,7 @@
     width: 400px;
     height: 200px;
     z-index: 10;
-    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    background-color: rgba(226, 230, 0, 0.2); /*dim the background*/
     pointer-events: none;
 }
 
@@ -36,7 +36,7 @@
     width: 400px;
     height: 200px;
     z-index: 10;
-    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    background-color: rgba(226, 230, 0, 0.2); /*dim the background*/
     pointer-events: none;
   }
 
@@ -50,7 +50,7 @@
     border-style: solid;
     border-color:white;
     border-width: 3px;
-    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    background-color: rgba(226, 230, 0, 0.2); /*dim the background*/
     pointer-events: none;
 }
 
@@ -83,7 +83,7 @@
     width: 300px;
     height: 400px;
     z-index: 10;
-    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    background-color: rgba(226, 230, 0, 0.2); /*dim the background*/
     pointer-events: none;
     margin: 0 auto;
 }
@@ -93,7 +93,7 @@
     width: 500px;
     height: 200px;
     z-index: 10;
-    background-color: rgba(0, 77, 230, 0.2); /*dim the background*/
+    background-color: rgba(226, 230, 0, 0.2); /*dim the background*/
     pointer-events: none;
 }
 

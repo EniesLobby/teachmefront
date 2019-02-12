@@ -165,7 +165,7 @@ export class TreeComponent implements OnChanges {
     this.node_for_right_menu = node;
   }
 
-  // RENDER FUNCTION ************************************************************************************
+  // RENDER FUNCTION
   public render(rightClickedCoordinates, 
                 showContextMenu, 
                 leftClickedCoordinates, 

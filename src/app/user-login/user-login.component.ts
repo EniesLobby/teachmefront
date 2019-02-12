@@ -29,13 +29,12 @@ export class UserLoginComponent implements OnInit {
       });
   }
 
-//  constructor(private api: ApiService, private customer: CustomerService, private router: Router) {
-//  }
-
   ngOnInit() {
+  
   }
 
   submitForm() {
+
     let email = this.loginForm.value.email;
     let password = this.loginForm.value.password;
 

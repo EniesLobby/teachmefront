@@ -15,7 +15,7 @@ import { QuestionEditComponent } from './question-edit/question-edit.component';
 import { AnswersEditComponent } from './answers-edit/answers-edit.component';
 import { InformationEditComponent } from './information-edit/information-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HelperComponent } from './helper/helper.component';
+import { HelperComponent, NgbdModal2Content } from './helper/helper.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { AddInformationComponent } from './add-information/add-information.component';
 import { UserLoginComponent } from './user-login/user-login.component';
@@ -26,6 +26,7 @@ import { NodeEditorComponent } from './node-editor/node-editor.component';
 import { TreeManagerComponent } from './tree-manager/tree-manager.component';
 import { StudentViewComponent } from './student-view/student-view.component';
 import { BlockViewComponent } from './student-view/block-view/block-view.component';
+import { TutorialComponent } from './tutorial/tutorial.component';
  
 
 const appRoutes: Routes = [
@@ -55,7 +56,9 @@ const appRoutes: Routes = [
     NodeEditorComponent,
     TreeManagerComponent,
     StudentViewComponent,
-    BlockViewComponent
+    BlockViewComponent,
+    NgbdModal2Content,
+    TutorialComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -76,7 +79,9 @@ const appRoutes: Routes = [
     TreeComponent,
     NodeEditorComponent,
     TreeManagerComponent,
-    StudentViewComponent
+    StudentViewComponent,
+    NgbdModal2Content,
+    TutorialComponent
   ],
   providers: [TreeService],
   bootstrap: [AppComponent]

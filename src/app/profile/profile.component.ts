@@ -8,6 +8,8 @@ import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@ang
 import Quill from 'quill';
 import { Subscription } from 'rxjs'; 
 import * as $ from 'jquery';
+import { TutorialComponent } from '../tutorial/tutorial.component'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -26,7 +28,9 @@ export class ProfileComponent implements OnInit {
   titleEditForm: FormGroup;
   subscription: Subscription;
 
-  constructor(config: NgbModalConfig, private modalService: NgbModal, private treeService: TreeService, private formBuilder: FormBuilder, private userService: UserService ) { 
+  constructor(config: NgbModalConfig, private modalService: NgbModal, 
+    private router: Router,
+    private treeService: TreeService, private formBuilder: FormBuilder, private userService: UserService ) { 
     
     this.subscription = this.treeService.getMessage().subscribe(message => {
       if(message != undefined) {
@@ -49,7 +53,12 @@ export class ProfileComponent implements OnInit {
   }
 
   LogOut() {
-    
+    this.router.navigateByUrl('/');
+  }
+
+  openTutorial() {
+
+    const modalRef = this.modalService.open(TutorialComponent, { windowClass : "tutorial-modal" });
   }
 
   public selectTree(rootId: any) {
@@ -131,6 +140,12 @@ export class ProfileComponent implements OnInit {
     await this.treeService.getUser(this.userService.getEmail()).toPromise().then(
       val => {
         this.user = JSON.parse(val);
+        console.log(this.user);
+        
+        if(this.user.firstEnter) {
+          this.openTutorial();
+        }
+
         this.getInformation();
       }
     )

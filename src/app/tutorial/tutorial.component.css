@@ -1,0 +1,17 @@
+#tutorial_text {
+    padding: 15px;
+    border-style: solid;
+    border-width: 0px 0px 1px 4px;
+    border-color: rgba(44, 114, 255, 0.651);
+    font-size: 13px;
+    box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+#tutorial_gif {
+    padding: 15px;
+    border-style: solid;
+    border-width: 0px 0px 1px 4px;
+    border-color: rgba(44, 114, 255, 0.651);
+    font-size: 13px;
+    box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.1);
+}

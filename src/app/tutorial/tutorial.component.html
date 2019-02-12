@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ tutorials[currentTutorial].title }}</h4>
+</div>
+<div class="modal-body">
+  <div id="tutorial_text" > 
+    <div [innerHTML]="tutorials[currentTutorial].text"></div>
+  </div>
+  <div id="tutorial_gif">
+    <img [src]='tutorials[currentTutorial].gifLink' width="800" height="400">
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" (click)='prev()' *ngIf='currentTutorial != 0'>Previous</button>
+  <button class="btn btn-primary" (click)='next()'>Next {{currentTutorial + 1}} / 3</button>
+</div>

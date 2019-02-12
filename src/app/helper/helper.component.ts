@@ -1,11 +1,13 @@
-import { Component, OnChanges, Renderer, ElementRef, Input, Output, EventEmitter, Inject, OnInit, Injectable, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, Renderer, TemplateRef, Input, Output, EventEmitter, Inject, OnInit, Injectable, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TreeService } from '../tree/tree.service';
+import { NgbActiveModal, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-helper',
   templateUrl: './helper.component.html',
-  styleUrls: ['./helper.component.css']
+  styleUrls: ['./helper.component.css'],
+  providers: [NgbActiveModal]
 })
 export class HelperComponent implements OnInit {
   
@@ -16,20 +18,24 @@ export class HelperComponent implements OnInit {
   showHelperRoot: boolean = false;
   helpButton: boolean = true;
   showHelperHelpButton: boolean = true;
-
-  
   showHelperQuestionEdit: boolean = true;
-
   profileHelperText: string = "";
   supporterHelperText: string = "";
   rootHelperText: string = "";
   helpButtonHelperText: string = "";
   showHelperQuestionEditText: string ="";
+  showTutorial: boolean = false;
 
-  x;
-  y;
+  x: any;
+  y: any;
 
-  constructor(private treeService: TreeService) { 
+  constructor(config: NgbModalConfig, private modalService: NgbModal, 
+    private renderer : Renderer, public activeModal: NgbActiveModal, 
+    private treeService: TreeService ) {
+
+    config.keyboard = false;
+    config.backdrop = 'static';
+    
     this.subscription = this.treeService.getMessage().subscribe(message => {
       if(message != undefined) {
         if(message.text == "root_position") {
@@ -57,10 +63,15 @@ export class HelperComponent implements OnInit {
     });
   }
 
+  startTutorial() {
+
+  }
+
   ngOnInit() {
-    this.profileHelperText = "Here you can manage your profile.<br /> Currently only creation of the tree is active.";
-    this.supporterHelperText = "This window will show you information about clicked node. You can delete node or toggle its children."
-    this.rootHelperText = "This is root node of the tree. With right click on the node you can: <ul><li>change question</li><li>manage answers</li><li>manage information</li>"
+
+    //this.open(NgbdModal2Content);
+    this.profileHelperText = "Here you can manage your trees:<br /> <b>delete</b>, <b>create</b> or <b>rename</b> them!.";
+    this.rootHelperText = "This is root node of the tree. Click on the node to <ul><li>change question</li><li>manage answers</li><li>manage description</li>"
     this.helpButtonHelperText = "Click on the help to activate supporting messages"
     
     $(document).ready(function(){
@@ -88,15 +99,43 @@ export class HelperComponent implements OnInit {
   }
 
   helpButtonClick() {
+
     this.treeService.sendMessage("refresh", null);
     this.showHelperProfile = !this.showHelperProfile;
     this.helpButton = true;
     this.showHelperHelpButton = true;
-
-    if(this.x != undefined && this.y != undefined) {
-      this.showHelperRoot = !this.showHelperProfile;
-    }
+    this.showHelperRoot = !this.showHelperRoot;
   }
 
+  open(content) {
 
+    this.modalService.open(content, { 
+      windowClass : "huge-modal"
+    }).result.then((result) => {
+
+    }, (reason) => {
+    });
+  }
+
+}
+
+@Component({
+  template: `
+    <div class="modal-header">
+      <h4>Tutorial</h4>
+    </div>
+    <div class="modal-body">
+      ae
+      
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary">
+        Next
+      </button>
+    </div>
+  `
+})
+export class NgbdModal2Content {
+  constructor(public activeModal: NgbActiveModal) {}
+  showTutorial: false;
 }

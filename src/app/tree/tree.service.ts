@@ -180,4 +180,8 @@ export class TreeService {
                 console.log("The DELETE observable is now completed.");
             });
     }
+
+    setViewed(email: any) {
+        return this.http.post(this.Url + "/user/viewed/" + email, httpOptions)
+    }
 }

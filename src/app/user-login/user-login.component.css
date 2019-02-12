@@ -1,0 +1,26 @@
+#login_box {
+    padding-left: 10px;
+    padding-right: 20px;
+    padding-top: 250px;
+    padding-bottom: 5px;
+    border-style: solid;
+    border-width: 0px 0px 0px 2px;
+    border-color: rgba(44, 114, 255, 0.651);
+    font-size: 13px;
+    box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.1);
+    background-image:url('/assets/logo/logo.png');
+    background-repeat: no-repeat;
+    background-position-x: 40px;
+    background-position-y: 10px;
+    width: 30%; 
+    position: absolute; 
+    left: 30%; 
+    top: 10%;
+}
+
+#header {
+    padding-left: 10px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

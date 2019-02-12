@@ -9,6 +9,10 @@
     max-width: 99%;
   }
 
+.tutorial-modal .modal-dialog {
+  max-width: 900px;
+}
+
 .contextmenu {
     position: absolute;
 }
