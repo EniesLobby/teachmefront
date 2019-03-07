@@ -258,7 +258,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
     
     for(let i = 0; i < this.children.length; i ++ ) {
       if( this.children[i].nodeId == current_nodeId) {
-        this.children[i].answer = html.replace(/<[^>]*>/g, '');
+        this.children[i].answer = html.replace(/<[^>]*>/g, '').replace(/\\t/g, '');
         this.children[i].answerHtml = html;
       }
     }
@@ -342,7 +342,7 @@ export class NodeEditorComponent implements OnInit, OnDestroy {
 
     let rebuild = "";
     if(this.nodeEditForm.value.aliases[index] != null) {
-      rebuild = this.nodeEditForm.value.aliases[index].replace("\"", "\\\"");
+      rebuild = this.nodeEditForm.value.aliases[index].replace("\"", "\\\"").replace(/\\t/g, '');
     }
     this.refreshChild(this.arrayOfId[index], rebuild);
   }

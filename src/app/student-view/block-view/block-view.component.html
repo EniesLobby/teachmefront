@@ -17,6 +17,7 @@
                    </label>
             </div>
          </div>
+         <hr />
     </div>
   </div>
  </div>
@@ -34,7 +35,7 @@
   style="float: right; width: 100px; cursor: pointer;" disabled>Next</button>
 
  <div *ngIf='nextClicked'>
-    <app-block-view *ngIf='!finish' [nodeId]='multiAnswers' [sisStackBlock]='sisStackBlock' [gisStackBlock]='gisStackBlock'></app-block-view>  
+    <app-block-view *ngIf='!finish' [nodeId]='multiAnswers' [multiAnswers]='[]' [sisStackBlock]='sisStackBlock' [gisStackBlock]='gisStackBlock'></app-block-view>  
  </div>
 
  <div *ngIf='finalObject.length == 0'>

@@ -18,7 +18,7 @@ export class BlockViewComponent implements OnInit {
   startRootId: any;
   currentNodeData: any;
   currentChildrenData: any;
-  multiAnswers = [];
+  @Input() multiAnswers = [];
   finish: boolean = false;
   showButton: boolean = true;
   nextReady: boolean = true;
@@ -60,10 +60,40 @@ export class BlockViewComponent implements OnInit {
 
     let constructedId = this.constructId(this.nodeId);
 
+    // derive specific information. Groups Ids into specifi-information-group
+
+    for(var i = 0; i < this.nodeId.length; i ++ ) {
+      for(var j = i; j < this.nodeId.length; j ++ ) {
+        if(Math.abs(this.nodeId[i] - this.nodeId[j]) == 1) {
+          console.log("A", this.nodeId[i], this.nodeId[j])
+        }
+
+        if(Math.abs(this.nodeId[i] - this.nodeId[j]) > 3) {
+          console.log("AA", this.nodeId[i], this.nodeId[j])
+          
+          this.treeService.getSpecificInformation(this.nodeId[i]).toPromise().then( data => {
+            console.log("H", constructedId )
+            if(data != null ) {
+              console.log("H", data)
+              this.sisStackBlock.push(data.information);
+            }
+          });
+
+          this.treeService.getSpecificInformation(this.nodeId[j]).toPromise().then( data => {
+            console.log("H", constructedId )
+            if(data != null ) {
+              console.log("H", data)
+              this.sisStackBlock.push(data.information);
+            }
+          });
+        }
+      }
+    }
+
     this.treeService.getSpecificInformation(constructedId).toPromise().then( data => {
-      console.log("HUY SRABOTAET", constructedId )
+      console.log("H", constructedId )
       if(data != null ) {
-        console.log("HUY SRABOTAET", data)
+        console.log("H", data)
         this.sisStackBlock.push(data.information);
       }
     });
@@ -73,7 +103,6 @@ export class BlockViewComponent implements OnInit {
       this.getNode(this.nodeId[i]);
     }
 
-    console.log("showPrevious", this.showPrevious);
   }
 
   private createForm() {

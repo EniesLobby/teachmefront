@@ -142,7 +142,7 @@ export class TreeComponent implements OnChanges {
             "",
             "",
             this.current_rootId
-          )); // Now has value;
+          ));
       }
 
       $("body").on("contextmenu", function(e) {
@@ -154,7 +154,7 @@ export class TreeComponent implements OnChanges {
     return this.treeService.getTree(this.current_rootId).toPromise().then( data => {
       var temp = data;
       temp = temp.replace("\\", "");
-      temp = temp.replace(/(\r\n\t|\n|\r\t)/gm,"");
+      temp = temp.replace(/(\r\n\t|\n|\r\t)/gm,"").replace(/[\u0000-\u0019]+/g,"");
       this.tree_data = JSON.parse(temp);
     });
 
