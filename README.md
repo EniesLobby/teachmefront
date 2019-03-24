@@ -1,27 +1,21 @@
-# TeachmeFront
+# Teachme User Interface
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+## Introduction
+Expert systems, or recommendation systems in this context, are programs that provide user with special advises or give assistance in a complex area where human experience is important. Expert systems consist of an infer engine, a user interface and a knowledge database. Professional inserts his knowledge into database. The user, that wants to get advice for his problem, uses interface and sends his requirements. Infer engine analyzes requirements and derives advises from the knowledge database. Proposed work shows the step-by-step process of developing such an expert system. The process was based on user-oriented design and were performed two usability studies. As a result was obtained usable framework that can connect students and teachers.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Usage
+To run:
+1. Clone the repository
 
-## Code scaffolding
+```
+git clone https://github.com/EniesLobby/teachmeback.git
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+2. Inside root directory 
 
-## Build
+```
+ng serve
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+3. The user interface is accessable through http://localhost:4200
